@@ -26,10 +26,10 @@ VECTORS_FILE = "startups.npy"
 BATCH_SIZE = 256
 COLLECTION_NAME = "startups"
 
-co = cohere.Client(os.getenv("COHERE_API_KEY"))
+co = cohere.Client(os.environ["COHERE_API_KEY"])
 qd = QdrantClient(
-    host=os.getenv("QDRANT_HOST"),
-    api_key=os.getenv("QDRANT_API_KEY"),
+    host=os.environ["QDRANT_HOST"],
+    port=int(os.environ["QDRANT_PORT"])
 )
 
 
@@ -120,6 +120,47 @@ def create_collection(collection_name: str):
     )
 
 
+class NeuralSearcher:
+    """A neural searcher."""
+
+    def __init__(self, collection_name):
+        """
+        Initialize a neural searcher.
+
+        Args:
+            collection_name: the name of the collection to use when searching
+        """
+        self.collection_name = collection_name
+        # Initialize encoder model
+        self.model = co
+        # initialize Qdrant client
+        self.qdrant_client = qd
+
+    def search(self, text: str):
+        """
+        Query the database.
+
+        Args:
+            text: text to use to query database
+        """
+        # Convert text query into vector
+        vector = self.model.embed([text]).embeddings[0]
+        # print(f"Vectors: {vector}")
+
+        # Use `vector` for search for closest vectors in the collection
+        search_result = self.qdrant_client.search(
+            collection_name=self.collection_name,
+            query_vector=np.array(vector),
+            query_filter=None,  # We don't want any filters for now
+            limit=5  # 5 the most closest results is enough
+        )
+        # `search_result` contains found vector ids with similarity
+        # scores along with the stored payload
+        # In this function we are interested in payload only
+        payloads = [hit.payload for hit in search_result]
+        return payloads
+
+
 if __name__ == "__main__":
     if not os.path.isfile(PAYLOAD_FILE):
         print(f"Payload file {PAYLOAD_FILE} doesn't exist!", file=sys.stderr)
@@ -139,3 +180,19 @@ if __name__ == "__main__":
             create_collection("startups")
         else:
             raise
+    searcher = NeuralSearcher(COLLECTION_NAME)
+    while True:
+        try:
+            text = input("search: ")
+        except:
+            break
+        results = searcher.search(text)
+        for result in results:
+            print(f"""\
+{result['alt']}
+----------------
+{result['description']} => {result['city']}
+=======================================================
+""")
+    # print(type(result))
+    # print(result)
