@@ -175,7 +175,6 @@ class NeuralSearcher:
         payloads = [hit.payload for hit in search_result]
         return payloads
 
-
 def print_results(results: list[StartUp]):
     """Print the results of a search."""
     for result in results:
