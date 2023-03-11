@@ -11,14 +11,17 @@ then Qdrant to do quick vector searches.
 import json
 import os
 import sys
+from typing import TypedDict
 
 import cohere
 import numpy as np
 import pandas as pd
+import rich
 from cohere.embeddings import Embeddings
 from qdrant_client import QdrantClient
-from qdrant_client.models import Distance, VectorParams
 from qdrant_client.http.exceptions import UnexpectedResponse
+from qdrant_client.models import Distance, VectorParams
+from rich.panel import Panel
 from tqdm import tqdm
 
 PAYLOAD_FILE = "startups.json"
@@ -31,6 +34,17 @@ qd = QdrantClient(
     host=os.environ["QDRANT_HOST"],
     port=int(os.environ["QDRANT_PORT"])
 )
+
+
+class StartUp(TypedDict):
+    """A startup entry in the database."""
+
+    name: str
+    images: str
+    alt: str
+    description: str
+    link: str
+    city: str
 
 
 def get_embeddings(texts: list[str]) -> np.ndarray:
@@ -116,7 +130,8 @@ def create_collection(collection_name: str):
         vectors=vectors,
         payload=payload,
         ids=None,  # Vector ids will be assigned automatically
-        batch_size=BATCH_SIZE  # How many vectors will be uploaded at once?
+        batch_size=BATCH_SIZE,  # How many vectors will be uploaded at once?
+        parallel=10
     )
 
 
@@ -160,6 +175,15 @@ class NeuralSearcher:
         payloads = [hit.payload for hit in search_result]
         return payloads
 
+def print_results(results: list[StartUp]):
+    """Print the results of a search."""
+    for result in results:
+        panel = Panel.fit(
+            result["description"],
+            title=result["name"],
+            subtitle=result["link"])
+        rich.print(panel)
+
 
 if __name__ == "__main__":
     if not os.path.isfile(PAYLOAD_FILE):
@@ -174,6 +198,7 @@ if __name__ == "__main__":
     try:
         qd.get_collection(COLLECTION_NAME)
         print(f"Collection {COLLECTION_NAME!r} already exists.")
+        create_collection("startups")
     except UnexpectedResponse as exc:
         if exc.status_code == 404:
             print(f"Creating collection {COLLECTION_NAME!r}...")
@@ -184,15 +209,9 @@ if __name__ == "__main__":
     while True:
         try:
             text = input("search: ")
-        except:
+        except (EOFError, KeyboardInterrupt):
             break
         results = searcher.search(text)
-        for result in results:
-            print(f"""\
-{result['alt']}
-----------------
-{result['description']} => {result['city']}
-=======================================================
-""")
+        print_results(results)
     # print(type(result))
     # print(result)

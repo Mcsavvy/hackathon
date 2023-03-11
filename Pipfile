@@ -11,6 +11,8 @@ cohere = "*"
 tqdm = "*"
 bs4 = "*"
 requests = "*"
+rich = "*"
+
 [dev-packages]
 
 [requires]
