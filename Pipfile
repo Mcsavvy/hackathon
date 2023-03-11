@@ -9,7 +9,8 @@ numpy = "*"
 pandas = "*"
 cohere = "*"
 tqdm = "*"
-
+bs4 = "*"
+requests = "*"
 [dev-packages]
 
 [requires]
