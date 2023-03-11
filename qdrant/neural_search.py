@@ -179,7 +179,7 @@ class NeuralSearcher:
 def print_results(results: list[StartUp]):
     """Print the results of a search."""
     for result in results:
-        panel = Panel.fit(
+        panel = Panel(
             result["description"],
             title=result["name"],
             subtitle=result["link"])
@@ -199,7 +199,6 @@ if __name__ == "__main__":
     try:
         qd.get_collection(COLLECTION_NAME)
         print(f"Collection {COLLECTION_NAME!r} already exists.")
-        create_collection("startups")
     except UnexpectedResponse as exc:
         if exc.status_code == 404:
             print(f"Creating collection {COLLECTION_NAME!r}...")
