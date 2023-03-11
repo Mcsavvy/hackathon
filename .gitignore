@@ -1,2 +1,4 @@
 __pycache__
 .env
+startups.npy
+Pipfile.lock

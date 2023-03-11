@@ -7,6 +7,8 @@ name = "pypi"
 qdrant-client = "*"
 numpy = "*"
 pandas = "*"
+cohere = "*"
+tqdm = "*"
 
 [dev-packages]
 
