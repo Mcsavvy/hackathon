@@ -59,13 +59,11 @@ def get_embeddings(texts: list[str]) -> np.ndarray:
         batch.append(text)
         if len(batch) >= batch_size:
             response = co.embed(batch)
-            for embedding in response.embeddings:
-                embeddings.append(embedding)
+            embeddings.append(response.embeddings)
             batch = []
     if len(batch) > 0:
         response = co.embed(batch)
-        for embedding in response.embeddings:
-            embeddings.append(embedding)
+        embeddings.append(response.embeddings)
         batch = []
     vectors = np.concatenate(embeddings)
     return vectors
@@ -104,7 +102,7 @@ def create_collection(collection_name: str):
     # Other option would be to use Mmap, if we don't want to load all data
     # into RAM
     vectors = np.load(VECTORS_FILE)
-    vector_size = 768
+    vector_size = len(vectors[0])
     # The recreate_collection function first tries to remove an existing
     # collection with the same name.
     # This is useful if you are experimenting and running the script
@@ -132,11 +130,9 @@ if __name__ == "__main__":
     else:
         print(f"Creating embeddings...")
         embed_payload()
-
     try:
         qd.get_collection(COLLECTION_NAME)
         print(f"Collection {COLLECTION_NAME!r} already exists.")
-        create_collection("startups")
     except UnexpectedResponse as exc:
         if exc.status_code == 404:
             print(f"Creating collection {COLLECTION_NAME!r}...")
