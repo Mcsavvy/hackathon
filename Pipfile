@@ -12,6 +12,7 @@ tqdm = "*"
 bs4 = "*"
 requests = "*"
 rich = "*"
+types-requests = "*"
 
 [dev-packages]
 
