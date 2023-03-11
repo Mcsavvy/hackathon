@@ -2,3 +2,5 @@ __pycache__
 .env
 startups.npy
 Pipfile.lock
+qdrant_storage
+path

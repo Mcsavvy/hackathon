@@ -11,14 +11,17 @@ then Qdrant to do quick vector searches.
 import json
 import os
 import sys
+from typing import TypedDict
 
 import cohere
 import numpy as np
 import pandas as pd
+import rich
 from cohere.embeddings import Embeddings
 from qdrant_client import QdrantClient
-from qdrant_client.models import Distance, VectorParams
 from qdrant_client.http.exceptions import UnexpectedResponse
+from qdrant_client.models import Distance, VectorParams
+from rich.panel import Panel
 from tqdm import tqdm
 
 PAYLOAD_FILE = "startups.json"
@@ -26,11 +29,22 @@ VECTORS_FILE = "startups.npy"
 BATCH_SIZE = 256
 COLLECTION_NAME = "startups"
 
-co = cohere.Client(os.getenv("COHERE_API_KEY"))
+co = cohere.Client(os.environ["COHERE_API_KEY"])
 qd = QdrantClient(
-    host=os.getenv("QDRANT_HOST"),
-    api_key=os.getenv("QDRANT_API_KEY"),
+    host=os.environ["QDRANT_HOST"],
+    port=int(os.environ["QDRANT_PORT"])
 )
+
+
+class StartUp(TypedDict):
+    """A startup entry in the database."""
+
+    name: str
+    images: str
+    alt: str
+    description: str
+    link: str
+    city: str
 
 
 def get_embeddings(texts: list[str]) -> np.ndarray:
@@ -116,8 +130,60 @@ def create_collection(collection_name: str):
         vectors=vectors,
         payload=payload,
         ids=None,  # Vector ids will be assigned automatically
-        batch_size=BATCH_SIZE  # How many vectors will be uploaded at once?
+        batch_size=BATCH_SIZE,  # How many vectors will be uploaded at once?
+        parallel=10
     )
+
+
+class NeuralSearcher:
+    """A neural searcher."""
+
+    def __init__(self, collection_name):
+        """
+        Initialize a neural searcher.
+
+        Args:
+            collection_name: the name of the collection to use when searching
+        """
+        self.collection_name = collection_name
+        # Initialize encoder model
+        self.model = co
+        # initialize Qdrant client
+        self.qdrant_client = qd
+
+    def search(self, text: str):
+        """
+        Query the database.
+
+        Args:
+            text: text to use to query database
+        """
+        # Convert text query into vector
+        vector = self.model.embed([text]).embeddings[0]
+        # print(f"Vectors: {vector}")
+
+        # Use `vector` for search for closest vectors in the collection
+        search_result = self.qdrant_client.search(
+            collection_name=self.collection_name,
+            query_vector=np.array(vector),
+            query_filter=None,  # We don't want any filters for now
+            limit=5  # 5 the most closest results is enough
+        )
+        # `search_result` contains found vector ids with similarity
+        # scores along with the stored payload
+        # In this function we are interested in payload only
+        payloads = [hit.payload for hit in search_result]
+        return payloads
+
+
+def print_results(results: list[StartUp]):
+    """Print the results of a search."""
+    for result in results:
+        panel = Panel.fit(
+            result["description"],
+            title=result["name"],
+            subtitle=result["link"])
+        rich.print(panel)
 
 
 if __name__ == "__main__":
@@ -133,9 +199,20 @@ if __name__ == "__main__":
     try:
         qd.get_collection(COLLECTION_NAME)
         print(f"Collection {COLLECTION_NAME!r} already exists.")
+        create_collection("startups")
     except UnexpectedResponse as exc:
         if exc.status_code == 404:
             print(f"Creating collection {COLLECTION_NAME!r}...")
             create_collection("startups")
         else:
             raise
+    searcher = NeuralSearcher(COLLECTION_NAME)
+    while True:
+        try:
+            text = input("search: ")
+        except (EOFError, KeyboardInterrupt):
+            break
+        results = searcher.search(text)
+        print_results(results)
+    # print(type(result))
+    # print(result)

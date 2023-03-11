@@ -9,6 +9,7 @@ numpy = "*"
 pandas = "*"
 cohere = "*"
 tqdm = "*"
+rich = "*"
 
 [dev-packages]
 
