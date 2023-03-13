@@ -13,7 +13,8 @@ the cohere Ai now interprets this dictionary in a user friendly for
         model='command-xlarge-nightly',  
         prompt = prompt,  
         max_tokens=400,
-        temperature=1.5)
+        temperature=1.5,
+        k=2)
     res = response.generations[0].text
     print(res)
     return res;
