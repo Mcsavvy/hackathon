@@ -80,7 +80,7 @@ def get_embeddings(texts: list[str]) -> np.ndarray:
         if len(batch) >= batch_size:
             with console.status(f"Embedding batch {batch_count}...") as status:
                 start = time.perf_counter()
-                response = co.embed(batch)
+                response = co.embed(text=batch, model='multilingual-22-12')
                 duration = divmod(time.perf_counter() - start, 60)
                 console.log(
                     "Done embedding in {} minute(s) and {:.4f} seconds ✔"
@@ -91,7 +91,7 @@ def get_embeddings(texts: list[str]) -> np.ndarray:
     if len(batch) > 0:
         with console.status(f"Embedding batch {batch_count}...") as status:
             start = time.perf_counter()
-            response = co.embed(batch)
+            response = co.embed(text=batch, model='multilingual-22-12')
             duration = divmod(time.perf_counter() - start, 60)
             console.log("Done embedding in {} minute(s) and {:.4f} seconds ✔"
                         .format(*duration))
