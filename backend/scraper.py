@@ -68,16 +68,4 @@ def serialize_db(link):
 
 
 if __name__ == "__main__":
-    # serialize_db(LINK)
-    with open("phones_raw.json", 'r') as fd:
-        x = fd.read()
-        print(x)
-        # a = json.loads(x)
-        # i = 0
-        # no_img = []
-        # for phone in a:
-        #     if 'images' not in phone.keys():
-        #         i += 1
-        #         temp = a.pop(a.index(phone))
-        #         no_img.append(temp)
-        # print(len(no_img))
+    serialize_db(LINK)
