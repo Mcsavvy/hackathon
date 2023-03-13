@@ -12,6 +12,7 @@ import json
 import os
 import sys
 from typing import TypedDict
+import time
 
 import cohere
 import numpy as np
@@ -22,7 +23,10 @@ from qdrant_client import QdrantClient
 from qdrant_client.http.exceptions import UnexpectedResponse
 from qdrant_client.models import Distance, VectorParams
 from rich.panel import Panel
+from rich.progress import Progress
+from rich import get_console
 from tqdm import tqdm
+from rich import box
 
 PAYLOAD_FILE = "startups.json"
 VECTORS_FILE = "startups.npy"
@@ -34,6 +38,7 @@ qd = QdrantClient(
     host=os.environ["QDRANT_HOST"],
     port=int(os.environ["QDRANT_PORT"])
 )
+console = get_console()
 
 
 class StartUp(TypedDict):
@@ -68,16 +73,30 @@ def get_embeddings(texts: list[str]) -> np.ndarray:
     embeddings: list[list[float]] = []
     embedding: list[float]
     batch_size = 96
+    batch_count = 1
     batch: list[str] = []
     for text in texts:
         batch.append(text)
         if len(batch) >= batch_size:
-            response = co.embed(batch)
+            with console.status(f"Embedding batch {batch_count}...") as status:
+                start = time.perf_counter()
+                response = co.embed(batch)
+                duration = divmod(time.perf_counter() - start, 60)
+                console.log(
+                    "Done embedding in {} minute(s) and {:.4f} seconds ✔"
+                    .format(*duration))
             embeddings.append(response.embeddings)
+            batch_count += 1
             batch = []
     if len(batch) > 0:
-        response = co.embed(batch)
+        with console.status(f"Embedding batch {batch_count}...") as status:
+            start = time.perf_counter()
+            response = co.embed(batch)
+            duration = divmod(time.perf_counter() - start, 60)
+            console.log("Done embedding in {} minute(s) and {:.4f} seconds ✔"
+                        .format(*duration))
         embeddings.append(response.embeddings)
+        batch_count += 1
         batch = []
     vectors = np.concatenate(embeddings)
     return vectors
@@ -94,7 +113,7 @@ def embed_payload() -> None:
     df = pd.read_json(PAYLOAD_FILE, lines=True)
     texts: list[str] = []
     for row in tqdm(df.itertuples()):
-        description = row.alt + ". " + row.description
+        description = f"{row.alt}. {row.description}. {row.city}"
         texts.append(description)
     embeddings: np.ndarray = get_embeddings(texts)
     np.save(VECTORS_FILE, embeddings)
@@ -175,14 +194,20 @@ class NeuralSearcher:
         payloads = [hit.payload for hit in search_result]
         return payloads
 
+
 def print_results(results: list[StartUp]):
     """Print the results of a search."""
     for result in results:
         panel = Panel(
             result["description"],
-            title=result["name"],
-            subtitle=result["link"])
+            border_style="yellow",
+            title=f"{result['name']} ({result['city']})",
+            subtitle=result["link"],
+            subtitle_align="right",
+            box=box.SQUARE)
         rich.print(panel)
+        print()
+    console.rule()
 
 
 if __name__ == "__main__":
@@ -191,24 +216,27 @@ if __name__ == "__main__":
         exit(1)
 
     if os.path.isfile(VECTORS_FILE):
-        print(f"Embeddings already exists.")
+        # print(f"Embeddings already exists.")
+        pass
     else:
         print(f"Creating embeddings...")
         embed_payload()
     try:
         qd.get_collection(COLLECTION_NAME)
-        print(f"Collection {COLLECTION_NAME!r} already exists.")
+        # print(f"Collection {COLLECTION_NAME!r} already exists.")
     except UnexpectedResponse as exc:
         if exc.status_code == 404:
-            print(f"Creating collection {COLLECTION_NAME!r}...")
-            create_collection("startups")
+            with console.status(
+                    f"Creating collection {COLLECTION_NAME!r}"):
+                create_collection("startups")
         else:
             raise
     searcher = NeuralSearcher(COLLECTION_NAME)
     while True:
         try:
-            text = input("search: ")
+            text = console.input("search for a startup: ")
         except (EOFError, KeyboardInterrupt):
+            print()
             break
         results = searcher.search(text)
         print_results(results)
