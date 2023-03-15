@@ -1,0 +1,227 @@
+{
+  "[]": {
+    "id": {},
+    "name": {},
+    "mpn": {},
+    "info": {},
+    "data": {
+      "cpu": {
+        "type": {},
+        "generation": {},
+        "implementation": {},
+        "number_of_cores": {},
+        "clock_speed__ghz": {},
+        "max_clock_speed__ghz": {},
+        "cache__mb": {},
+        "manufacturer": {},
+        "has_intel_virtualization_technology": {},
+        "has_intel_trusted_execution_technology": {},
+        "has_intel_vt_x_with_extended_page_tables": {},
+        "has_intel_virtualization_technology_for_directed_io": {},
+        "cache_type": {},
+        "configurable_tdp_down__w": {},
+        "idle_states": {},
+        "configurable_tdp_up__w": {},
+        "configurable_tdp_up__ghz": {},
+        "configurable_tdp_down__ghz": {},
+        "socket": {},
+        "has_intel_64": {},
+        "lithography__nm": {},
+        "system_bus__gts": {},
+        "has_intel_software_guard_extensions": {},
+        "chipset_motherboard": {},
+        "has_intel_stable_image_platform_program": {},
+        "type_coprocessor": {},
+        "number_of_coprocessor": {},
+        "has_intel_tsx_ni": {}
+      },
+      "audio": {
+        "has_speakers": {},
+        "technology": {},
+        "has_headphone_jack": {},
+        "voice_assistant_built_in": {},
+        "has_microphone": {},
+        "number_of_speakers": {},
+        "power__w": {},
+        "brand_speakers": {},
+        "number_of_microphones": {},
+        "number_of_headphone_outputs": {},
+        "audiochip": {}
+      },
+      "video": {
+        "has_internal_video_card": {},
+        "internal_video_card_type": {},
+        "manufacturer": {},
+        "separate_video_card_type": {},
+        "memory__gb": {},
+        "memory_type": {},
+        "has_separate_video_card": {},
+        "has_4k_support": {},
+        "has_cuda": {},
+        "has_6k_support": {},
+        "max_memory_bandwidth__gbs": {},
+        "has_nvidia_max_q": {}
+      },
+      "camera": {
+        "has_camera_front": {},
+        "camera_front_resolution__p": {},
+        "camera_front__mp": {},
+        "type": {},
+        "has_infrared": {},
+        "capturing_speed__fps": {},
+        "type_privacy": {},
+        "has_privacy_camera": {},
+        "has_camera_back": {}
+      },
+      "design": {
+        "color": {},
+        "material": {},
+        "color_name": {}
+      },
+      "memory": {
+        "type": {},
+        "ram__gb": {},
+        "max_ram__gb": {},
+        "number_of_slots": {},
+        "is_memory_expandable": {},
+        "clock_speed__ghz": {},
+        "cache_memory__mb": {},
+        "layout__gb": {},
+        "form_factor": {},
+        "slots": {}
+      },
+      "battery": {
+        "power__w": {},
+        "capacity__wh": {},
+        "technology": {},
+        "battery_life__h": {},
+        "number_of_battery_cells": {},
+        "weight__g": {},
+        "has_fast_charging": {},
+        "voltage__v": {},
+        "charging_time__h": {},
+        "battery_cells": {},
+        "browsing_time_wifi__h": {}
+      },
+      "display": {
+        "ratio": {},
+        "size__inch": {},
+        "technology": {},
+        "refresh_rate__hz": {},
+        "resolution__pixels": {},
+        "panel": {},
+        "hd_type": {},
+        "has_led_backlight": {},
+        "has_touchscreen": {},
+        "brightness__cdm": {},
+        "has_anti_reflection": {},
+        "max_refresh_rate__hz": {},
+        "has_free_sync": {},
+        "pixel_density__ppi": {},
+        "has_dual_screen": {},
+        "high_dynamic_range_hdr_technology": {},
+        "contrast_ratio": {},
+        "has_true_tone_technology": {},
+        "has_g_sync": {},
+        "has_adaptive_sync": {}
+      },
+      "general": {
+        "ean": {},
+        "mpn": {},
+        "brand": {},
+        "year": {},
+        "serie": {},
+        "use": {}
+      },
+      "network": {
+        "bluetooth_version": {},
+        "type_wlan_controller": {},
+        "type_antenna": {},
+        "has_bluetooth": {},
+        "wifi_standards": {},
+        "has_ethernet_lan": {},
+        "ethernet_lan_speed__mbits": {},
+        "manufacturer_wlan_controller": {},
+        "has_mobile_connection": {},
+        "max_wireless_data_transfer_rate__mbits": {}
+      },
+      "storage": {
+        "type": {},
+        "capacity__gb": {},
+        "ssd_capacity__gb": {},
+        "number_of_ssd": {},
+        "ssd_interfaces": {},
+        "compatible_memory_cards": {},
+        "has_integrated_memory_card_reader": {},
+        "has_nvme": {},
+        "is_storage_expandable": {},
+        "hard_drive_accelerator": {}
+      },
+      "keyboard": {
+        "type": {},
+        "color_light": {},
+        "has_numeric_keyboard": {},
+        "has_light": {},
+        "type_touchpad": {},
+        "has_touchpad": {},
+        "has_touchbar": {},
+        "has_programmable_keys": {}
+      },
+      "security": {
+        "has_smart_card_reader": {},
+        "has_option_for_cable_lock": {},
+        "extra": {},
+        "has_password_protection": {},
+        "has_fingerprint_reader": {}
+      },
+      "software": {
+        "os": {},
+        "available_software": {},
+        "os_architecture__bit": {},
+        "os_language": {},
+        "trialsoftware": {}
+      },
+      "measurements": {
+        "weight__g": {},
+        "width__mm": {},
+        "height__mm": {},
+        "length__mm": {},
+        "height_back__mm": {},
+        "height_front__mm": {}
+      },
+      "ports_interfaces": {
+        "number_of_hdmi": {},
+        "has_thunderbolt": {},
+        "number_of_usb_a_gen_2": {},
+        "number_of_usb_c_gen_2": {},
+        "number_of_thunderbolt": {},
+        "number_of_usb_a_gen_1": {},
+        "number_of_ethernet_lan_rj_45": {},
+        "has_usb_c_displayport_alternative_modus": {},
+        "hdmi_version": {},
+        "charging_port_type": {},
+        "has_usb_power_delivery": {},
+        "has_displayport": {},
+        "has_powershare": {},
+        "number_of_usb4_2x2": {},
+        "number_of_powershare": {},
+        "has_vga_port": {},
+        "number_of_displayport_outputs_total": {},
+        "number_of_hdmi_hdcp_2_2_outputs": {}
+      }
+    },
+    "images": {
+      "[]": {
+        "url": {}
+      }
+    },
+    "prices": {
+      "[]": {
+        "price": {},
+        "old_price": {},
+        "currency": {},
+        "url": {}
+      }
+    }
+  }
+}
