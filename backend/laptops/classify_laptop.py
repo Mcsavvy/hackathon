@@ -788,7 +788,7 @@ def classify_laptop_video(video) -> str:
     return "This laptop comes {}.".format(" ".join(messages))
 
 
-def classify_based_on_specs(data: list[dict]) -> list[list[str]]:
+def classify_based_on_specs(data: list[dict], status= None) -> list[list[str]]:
     """
     Classify laptop based on it's specs.
 
@@ -834,7 +834,7 @@ def classify_based_on_specs(data: list[dict]) -> list[list[str]]:
     return classifications
 
 
-def classify_based_on_group(data: list[dict]) -> list[list[str]]:
+def classify_based_on_group(data: list[dict], status=None) -> list[list[str]]:
     """
     Classify laptops based on users.
 
@@ -858,56 +858,72 @@ def classify_based_on_group(data: list[dict]) -> list[list[str]]:
     inputs = []
     classifications: list[list[str]] = []
 
+    def classify(batch: list[str]):
+        # Classify the inputs using the Cohere API
+        response = client.classify(inputs=batch, examples=examples, model="large")
+    
+        status.update("Processing classifications...")
+        # Extract the classification labels and confidences for each input
+        for classification in response.classifications:
+            labels = []
+            predictions: list[tuple[str, float]] = []
+            for label, pred in classification.labels.items():
+                # Append the (label, confidence) tuple to the predictions list
+                predictions.append((label, pred.confidence))
+            # Sort the predictions list in ascending order of confidence
+            predictions.sort(key=lambda p: p[1])
+            # Only keep the labels with a confidence greater than 5
+            for pred in predictions:
+                if pred[1] > 5:
+                    labels.append(pred[0])
+            # If no labels meet the confidence threshold, use the predicted label
+            if not labels:
+                labels.append(classification.prediction)
+            # Append the labels to the classifications list
+            classifications.append(labels)
+
     # Load the examples from a json file located in the same directory as this script
     examples_file = Path(__file__).parent.joinpath("users_examples.json")
     for ex in json.loads(examples_file.read_text()):
         # Create an Example object from each example in the file and append it to the examples list
         examples.append(Example(ex[0], ex[1]))
     
-    print("Fetching data...")
+    status.update("Fetching data...")
     # Extract the input texts from the input dictionaries
+    batch = []
+    batch_count = 1
     for laptop in data:
-        inputs.append(laptop["info"])
+        if len(batch) >= 96:
+            status.update(f"Classifying batch {batch_count}...")
+            classify(batch)
+            batch = []
+            batch_count += 1
+        batch.append(laptop["info"] or laptop["name"])
+    if len(batch) >= 1:
+        status.update(f"Classifying batch {batch_count}...")
+        classify(batch)
+        batch = []
+        batch_count += 1
         
-    print("Classifying data...")
-    # Initialize a CohereClient object to communicate with the Cohere API
-    # Classify the inputs using the Cohere API and the examples defined earlier
-    response = client.classify(inputs=inputs, examples=examples, model="large")
-    
-    print("Computing predictions...")
-    # Extract the classification labels and confidences for each input
-    for classification in response.classifications:
-        labels = []
-        predictions: list[tuple[str, float]] = []
-        for label, pred in classification.labels.items():
-            # Append the (label, confidence) tuple to the predictions list
-            predictions.append((label, pred.confidence))
-        # Sort the predictions list in ascending order of confidence
-        predictions.sort(key=lambda p: p[1])
-        # Only keep the labels with a confidence greater than 5
-        for pred in predictions:
-            if pred[1] > 5:
-                labels.append(pred[0])
-        # If no labels meet the confidence threshold, use the predicted label
-        if not labels:
-            labels.append(classification.prediction)
-        # Append the labels to the classifications list
-        classifications.append(labels)
     
     return classifications
 
 
 def main():
+    import rich
+
+    console = rich.get_console()
     FILE = DATABASE.joinpath("laptops_raw.json")
     GROUP_DB = DATABASE.joinpath(
         "laptops_classified_by_groups.json")
     SPECS_DB = DATABASE.joinpath(
         "laptops_classified_by_specs.json")
-    data = json.loads(FILE.read_text())[:20]
-    group_classifications = classify_based_on_group(data)
-    specs_classifications = classify_based_on_specs(data)
-    GROUP_DB.write_text(json.dumps(group_classifications, indent=1))
-    SPECS_DB.write_text(json.dumps(specs_classifications, indent=1))
+    with console.status("Classifying data...") as status:
+        data = json.loads(FILE.read_text())[:]
+        group_classifications = classify_based_on_group(data, status)
+        specs_classifications = classify_based_on_specs(data, status)
+        GROUP_DB.write_text(json.dumps(group_classifications, indent=1))
+        SPECS_DB.write_text(json.dumps(specs_classifications, indent=1))
     
 
 if __name__ == "__main__":
