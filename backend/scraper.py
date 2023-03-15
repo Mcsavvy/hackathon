@@ -62,7 +62,7 @@ def serialize_db(link):
     for page in final:
         for phone in page:
             end_result.append(phone)
-    with open("phones.json", "w") as fd:
+    with open("json_files/phones.json", "w") as fd:
         json.dump(end_result, fd)
     # print(end_result)
 

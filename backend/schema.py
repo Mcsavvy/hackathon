@@ -54,13 +54,13 @@ def walk_json_tree(
     return obj
 
 
-with open("laptops_raw.json", 'r') as f:
+with open("json_files/laptops_raw.json", 'r') as f:
     data = json.load(f)
     tree = walk_json_tree(data)
-    with open("laptops_schema_real.json", "w+") as f:
+    with open("json_files/laptops_schema_real.json", "w+") as f:
         json.dump(tree, f, indent=2)
 
-with open("phones_raw.json", 'r') as f:
+with open("json_files/phones_raw.json", 'r') as f:
     data = json.load(f)
-    with open("phones_schema_real.json", "w+") as f:
+    with open("json_files/phones_schema_real.json", "w+") as f:
         json.dump(walk_json_tree(data), f, indent=2)

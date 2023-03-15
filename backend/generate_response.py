@@ -1,6 +1,7 @@
 import cohere
 import os
 
+
 def interpret(phone):
     """The interpret function akes a dictionary and then calls on cohere AI
 the cohere Ai now interprets this dictionary in a user friendly for

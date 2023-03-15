@@ -103,7 +103,7 @@ async def get_laptops(session: aiohttp.ClientSession) -> None:
             print()
 
         # Save laptop data to file
-        with open("laptops_raw.json", "w+") as db:
+        with open("json_files/laptops_raw.json", "w+") as db:
             json.dump(laptops, db)
 
 
@@ -167,7 +167,7 @@ async def get_phones(session: aiohttp.ClientSession) -> None:
             print()
 
         # Save phone data to file
-        with open("phones_raw.json", "w+") as db:
+        with open("json_files/phones_raw.json", "w+") as db:
             json.dump(phones, db)
 
 
