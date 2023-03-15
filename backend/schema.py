@@ -7,6 +7,7 @@ of the data more transparent.
 """
 import json
 from typing import TypedDict as tdict, Union, Optional
+from config import DATABASE
 
 
 NodeType = Union[int, str, float, list, dict, bool]
@@ -54,13 +55,13 @@ def walk_json_tree(
     return obj
 
 
-with open("json_files/laptops_raw.json", 'r') as f:
+with open(DATABASE.joinpath("laptops_raw.json"), 'r') as f:
     data = json.load(f)
     tree = walk_json_tree(data)
-    with open("json_files/laptops_schema_real.json", "w+") as f:
+    with open(DATABASE.joinpath("laptops_schema_real.json"), "w+") as f:
         json.dump(tree, f, indent=2)
 
-with open("json_files/phones_raw.json", 'r') as f:
+with open(DATABASE.joinpath("phones_raw.json"), 'r') as f:
     data = json.load(f)
-    with open("json_files/phones_schema_real.json", "w+") as f:
+    with open(DATABASE.joinpath("phones_schema_real.json"), "w+") as f:
         json.dump(walk_json_tree(data), f, indent=2)

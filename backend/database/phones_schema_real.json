@@ -1,0 +1,153 @@
+{
+  "[]": {
+    "id": {},
+    "name": {},
+    "mpn": {},
+    "info": {},
+    "data": {
+      "cpu": {
+        "number_of_cores": {},
+        "type": {},
+        "has_coprocessor": {},
+        "type_coprocessor": {},
+        "number_of_coprocessor": {},
+        "clock_speed__ghz": {}
+      },
+      "other": {
+        "has_face_recognition": {},
+        "has_wireless_charging": {},
+        "can_be_used_underwater": {},
+        "has_spoken_navigation_instructions": {},
+        "has_fingerprint_reader": {},
+        "has_headphone_jack": {},
+        "is_water_resistant": {},
+        "has_magsafe": {},
+        "has_video_call": {},
+        "has_fast_charge": {},
+        "has_loudspeaker": {},
+        "is_shock_resistant": {},
+        "has_vibrating_alarm": {},
+        "has_dialing_with_voice": {}
+      },
+      "camera": {
+        "camera_back__mp": {},
+        "camera_front__mp": {},
+        "camera_back_amount": {},
+        "camera_front_amount": {},
+        "camera_back_type_flash": {},
+        "camera_back_has_auto_focus": {},
+        "camera_back_has_flash": {},
+        "camera_back_resolution": {},
+        "camera_back_digital_zoom": {},
+        "camera_back_has_panorama": {},
+        "camera_back_has_geotagging": {},
+        "camera_back_has_night_mode": {},
+        "camera_back_max_frame_rate__fps": {},
+        "camera_back_has_time_lapse_modus": {},
+        "camera_back_has_video_stabilizer": {},
+        "camera_back_number_of_lens_elements": {},
+        "camera_back_type_image_stabilizer": {},
+        "camera_back_has_time_lapse_mode": {}
+      },
+      "design": {
+        "color": {},
+        "material": {},
+        "color_name": {}
+      },
+      "battery": {
+        "capacity__mAh": {},
+        "technology": {},
+        "continuous_audio_playtime__h": {},
+        "continuous_video_playtime__h": {}
+      },
+      "display": {
+        "type": {},
+        "size__inch": {},
+        "resolution__pixels": {},
+        "has_touchscreen": {},
+        "refresh_rate__hz": {},
+        "has_gorilla_glass": {},
+        "pixel_density__ppi": {},
+        "shape": {},
+        "contrast_ratio": {},
+        "brightness__cdm": {},
+        "fingerprint_resistant": {}
+      },
+      "general": {
+        "mpn": {},
+        "year": {},
+        "brand": {},
+        "use": {},
+        "serie": {}
+      },
+      "network": {
+        "has_nfc": {},
+        "has_wifi": {},
+        "has_dual_sim": {},
+        "type_sim_card": {},
+        "bluetooth_version": {},
+        "has_bluetooth": {},
+        "wifi_standards": {},
+        "has_mimo": {},
+        "has_volte": {},
+        "has_airplay": {},
+        "has_ibeacon": {},
+        "3g_standards": {},
+        "4g_standards": {},
+        "sim_card_capacity": {},
+        "generation_mobile_network": {}
+      },
+      "sensors": {
+        "has_accelerometer": {},
+        "has_ambient_light_sensor": {},
+        "has_barometer": {},
+        "has_gyroscope": {},
+        "has_proximity_sensor": {},
+        "has_hall_sensor": {}
+      },
+      "storage": {
+        "capacity__gb": {},
+        "compatible_memory_cards": {}
+      },
+      "software": {
+        "os": {},
+        "platform": {},
+        "virtual_assistant": {},
+        "app_distribution_platform": {},
+        "available_software": {}
+      },
+      "navigation": {
+        "has_gps": {},
+        "has_a_gps": {},
+        "has_beidou": {},
+        "has_galileo": {},
+        "has_glonass": {},
+        "has_electronic_compass": {}
+      },
+      "measurements": {
+        "weight__g": {},
+        "width__mm": {},
+        "height__mm": {},
+        "length__mm": {}
+      },
+      "ports_interfaces": {
+        "type_of_connector": {},
+        "has_lightning_connector": {},
+        "has_usb": {}
+      }
+    },
+    "images": {
+      "[]": {
+        "url": {}
+      }
+    },
+    "prices": {
+      "[]": {
+        "price": {},
+        "old_price": {},
+        "currency": {},
+        "url": {}
+      }
+    }
+  }
+}
