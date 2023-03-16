@@ -7,7 +7,10 @@ of the data more transparent.
 """
 import json
 from typing import TypedDict as tdict, Union, Optional
-from config import DATABASE
+from .config import (
+    LAPTOP_SCHEMA, LAPTOP_DB,
+    PHONE_SCHEMA, PHONE_DB
+)
 
 
 NodeType = Union[int, str, float, list, dict, bool]
@@ -26,7 +29,12 @@ def walk_json_tree(
     Returns:
         ...
     """
-    _type = type(value).__name__
+    _type = {
+        int: "integer", float: "decimal",
+        dict: "object", list: "array",
+        str: "string", bool: "boolean",
+        type(None): "null"
+    }[type(value)]
     is_root = parent is None
     if is_root:
         obj = dict()  # type: ignore
@@ -35,33 +43,51 @@ def walk_json_tree(
         if count:
             obj["count"] = obj.get("count", 0) + 1
 
-    if _type == 'list':
+    if _type == 'array':
         for idx, item in enumerate(value):  # type: ignore
-            walk_json_tree(item, "[]", obj, get_values=get_values,
-                           get_types=get_types, count=count)
-    elif _type == 'dict':
+            walk_json_tree(
+                item, "[]", obj,
+                get_values=get_values,
+                count=count)
+    elif _type == 'object':
         for key, val in value.items():  # type: ignore
-            walk_json_tree(val, key, obj, get_values=get_values,
-                           get_types=get_types, count=count)
+            walk_json_tree(
+                val, key, obj,
+                get_values=get_values,
+                count=count)
     else:
-        if get_types:
-            obj_types = obj.setdefault("types", [])
-            if _type not in obj_types:
-                obj_types.append(_type)
+        obj_types = obj.setdefault("type", "")
+        if _type not in obj_types:
+            if obj_types:
+                obj_types += ", " + _type
+            else:
+                obj_types += _type
+        obj["type"] = obj_types
         if get_values:
-            obj_values = obj.setdefault("values", list())
-            if value not in obj_values:
-                obj_values.append(value)
+            if key not in ('url', 'price'):
+                obj_values = obj.setdefault("values", list())
+                if value not in obj_values:
+                    obj_values.append(value)
     return obj
 
 
-with open(DATABASE.joinpath("laptops_raw.json"), 'r') as f:
-    data = json.load(f)
-    tree = walk_json_tree(data)
-    with open(DATABASE.joinpath("laptops_schema_real.json"), "w+") as f:
-        json.dump(tree, f, indent=2)
+def create_scheme():
+    """Create database schema."""
+    import rich
 
-with open(DATABASE.joinpath("phones_raw.json"), 'r') as f:
-    data = json.load(f)
-    with open(DATABASE.joinpath("phones_schema_real.json"), "w+") as f:
-        json.dump(walk_json_tree(data), f, indent=2)
+    laptop_data = json.loads(LAPTOP_DB.read_text())
+    phone_data = json.loads(PHONE_DB.read_text())
+    laptop_schema = walk_json_tree(laptop_data, count=True)
+    phone_schema = walk_json_tree(phone_data, count=True)
+    LAPTOP_SCHEMA.write_text(json.dumps(laptop_schema, indent=1))
+    PHONE_SCHEMA.write_text(json.dumps(phone_schema, indent=1))
+
+if __name__ == "__main__":
+    import rich
+
+    data = json.loads(LAPTOP_DB.read_text())
+    prices = [laptop["prices"] for laptop in data]
+    schema = walk_json_tree(prices, count=True, get_values=True)
+    rich.print(schema)
+
+    create_scheme()

@@ -1,0 +1,801 @@
+{
+ "[]": {
+  "count": 6396,
+  "id": {
+   "count": 6396,
+   "type": "integer"
+  },
+  "name": {
+   "count": 6396,
+   "type": "string"
+  },
+  "mpn": {
+   "count": 6396,
+   "type": "string"
+  },
+  "info": {
+   "count": 6396,
+   "type": "string"
+  },
+  "data": {
+   "count": 6396,
+   "cpu": {
+    "count": 6392,
+    "type": {
+     "count": 6385,
+     "type": "string"
+    },
+    "generation": {
+     "count": 3274,
+     "type": "string"
+    },
+    "implementation": {
+     "count": 5843,
+     "type": "string"
+    },
+    "number_of_cores": {
+     "count": 5347,
+     "type": "integer"
+    },
+    "clock_speed__ghz": {
+     "count": 3249,
+     "type": "decimal, integer"
+    },
+    "max_clock_speed__ghz": {
+     "count": 5057,
+     "type": "decimal, integer"
+    },
+    "cache__mb": {
+     "count": 2211,
+     "type": "integer"
+    },
+    "manufacturer": {
+     "count": 1752,
+     "type": "string"
+    },
+    "has_intel_virtualization_technology": {
+     "count": 1120,
+     "type": "boolean"
+    },
+    "has_intel_trusted_execution_technology": {
+     "count": 495,
+     "type": "boolean"
+    },
+    "has_intel_vt_x_with_extended_page_tables": {
+     "count": 1120,
+     "type": "boolean"
+    },
+    "has_intel_virtualization_technology_for_directed_io": {
+     "count": 1115,
+     "type": "boolean"
+    },
+    "cache_type": {
+     "count": 718,
+     "type": "integer"
+    },
+    "configurable_tdp_down__w": {
+     "count": 803,
+     "type": "integer"
+    },
+    "idle_states": {
+     "count": 687,
+     "type": "boolean"
+    },
+    "configurable_tdp_up__w": {
+     "count": 503,
+     "type": "integer"
+    },
+    "configurable_tdp_up__ghz": {
+     "count": 506,
+     "type": "integer"
+    },
+    "configurable_tdp_down__ghz": {
+     "count": 213,
+     "type": "integer"
+    },
+    "socket": {
+     "count": 114,
+     "type": "string"
+    },
+    "has_intel_64": {
+     "count": 277,
+     "type": "boolean"
+    },
+    "lithography__nm": {
+     "count": 119,
+     "type": "integer"
+    },
+    "system_bus__gts": {
+     "count": 79,
+     "type": "integer"
+    },
+    "has_intel_software_guard_extensions": {
+     "count": 206,
+     "type": "boolean"
+    },
+    "chipset_motherboard": {
+     "count": 456,
+     "type": "string"
+    },
+    "has_intel_stable_image_platform_program": {
+     "count": 196,
+     "type": "boolean"
+    },
+    "type_coprocessor": {
+     "count": 76,
+     "type": "string"
+    },
+    "number_of_coprocessor": {
+     "count": 75,
+     "type": "integer"
+    },
+    "has_intel_tsx_ni": {
+     "count": 6,
+     "type": "boolean"
+    }
+   },
+   "audio": {
+    "count": 6392,
+    "has_speakers": {
+     "count": 3688,
+     "type": "boolean"
+    },
+    "technology": {
+     "count": 2839,
+     "type": "string"
+    },
+    "has_headphone_jack": {
+     "count": 1198,
+     "type": "boolean"
+    },
+    "voice_assistant_built_in": {
+     "count": 187,
+     "type": "string"
+    },
+    "has_microphone": {
+     "count": 2748,
+     "type": "boolean"
+    },
+    "number_of_speakers": {
+     "count": 2163,
+     "type": "integer"
+    },
+    "power__w": {
+     "count": 546,
+     "type": "integer"
+    },
+    "brand_speakers": {
+     "count": 896,
+     "type": "string"
+    },
+    "number_of_microphones": {
+     "count": 1043,
+     "type": "integer"
+    },
+    "number_of_headphone_outputs": {
+     "count": 171,
+     "type": "integer"
+    },
+    "audiochip": {
+     "count": 366,
+     "type": "string"
+    }
+   },
+   "video": {
+    "count": 6392,
+    "has_internal_video_card": {
+     "count": 4278,
+     "type": "boolean"
+    },
+    "internal_video_card_type": {
+     "count": 5823,
+     "type": "string"
+    },
+    "manufacturer": {
+     "count": 1455,
+     "type": "string"
+    },
+    "separate_video_card_type": {
+     "count": 2184,
+     "type": "string"
+    },
+    "memory__gb": {
+     "count": 642,
+     "type": "integer"
+    },
+    "memory_type": {
+     "count": 470,
+     "type": "string"
+    },
+    "has_separate_video_card": {
+     "count": 476,
+     "type": "boolean"
+    },
+    "has_4k_support": {
+     "count": 97,
+     "type": "boolean"
+    },
+    "has_cuda": {
+     "count": 65,
+     "type": "boolean"
+    },
+    "has_6k_support": {
+     "count": 85,
+     "type": "boolean"
+    },
+    "max_memory_bandwidth__gbs": {
+     "count": 57,
+     "type": "integer"
+    },
+    "has_nvidia_max_q": {
+     "count": 40,
+     "type": "boolean"
+    }
+   },
+   "camera": {
+    "count": 6392,
+    "has_camera_front": {
+     "count": 3395,
+     "type": "boolean"
+    },
+    "camera_front_resolution__p": {
+     "count": 458,
+     "type": "integer"
+    },
+    "camera_front__mp": {
+     "count": 74,
+     "type": "integer"
+    },
+    "type": {
+     "count": 1524,
+     "type": "string"
+    },
+    "has_infrared": {
+     "count": 501,
+     "type": "boolean"
+    },
+    "capturing_speed__fps": {
+     "count": 303,
+     "type": "integer"
+    },
+    "type_privacy": {
+     "count": 325,
+     "type": "string"
+    },
+    "has_privacy_camera": {
+     "count": 490,
+     "type": "boolean"
+    },
+    "has_camera_back": {
+     "count": 17,
+     "type": "boolean"
+    }
+   },
+   "design": {
+    "count": 6392,
+    "color": {
+     "count": 6376,
+     "type": "string"
+    },
+    "material": {
+     "count": 3268,
+     "type": "string"
+    },
+    "color_name": {
+     "count": 2259,
+     "type": "string"
+    }
+   },
+   "memory": {
+    "count": 6392,
+    "type": {
+     "count": 4919,
+     "type": "string"
+    },
+    "ram__gb": {
+     "count": 6383,
+     "type": "integer"
+    },
+    "max_ram__gb": {
+     "count": 3331,
+     "type": "integer"
+    },
+    "number_of_slots": {
+     "count": 3265,
+     "type": "integer"
+    },
+    "is_memory_expandable": {
+     "count": 1755,
+     "type": "boolean"
+    },
+    "clock_speed__ghz": {
+     "count": 1322,
+     "type": "integer"
+    },
+    "cache_memory__mb": {
+     "count": 870,
+     "type": "integer"
+    },
+    "layout__gb": {
+     "count": 924,
+     "type": "string"
+    },
+    "form_factor": {
+     "count": 1380,
+     "type": "string"
+    },
+    "slots": {
+     "count": 1694,
+     "type": "string"
+    }
+   },
+   "battery": {
+    "count": 6392,
+    "power__w": {
+     "count": 4254,
+     "type": "integer"
+    },
+    "capacity__wh": {
+     "count": 3958,
+     "type": "integer"
+    },
+    "technology": {
+     "count": 3214,
+     "type": "string"
+    },
+    "battery_life__h": {
+     "count": 2734,
+     "type": "integer, decimal"
+    },
+    "number_of_battery_cells": {
+     "count": 1210,
+     "type": "integer"
+    },
+    "weight__g": {
+     "count": 491,
+     "type": "integer"
+    },
+    "has_fast_charging": {
+     "count": 640,
+     "type": "boolean"
+    },
+    "voltage__v": {
+     "count": 130,
+     "type": "integer"
+    },
+    "charging_time__h": {
+     "count": 88,
+     "type": "integer"
+    },
+    "battery_cells": {
+     "count": 687,
+     "type": "string"
+    },
+    "browsing_time_wifi__h": {
+     "count": 56,
+     "type": "integer"
+    }
+   },
+   "display": {
+    "count": 6392,
+    "ratio": {
+     "count": 4030,
+     "type": "string"
+    },
+    "size__inch": {
+     "count": 6386,
+     "type": "decimal, integer"
+    },
+    "technology": {
+     "count": 4402,
+     "type": "string"
+    },
+    "refresh_rate__hz": {
+     "count": 3112,
+     "type": "integer"
+    },
+    "resolution__pixels": {
+     "count": 5886,
+     "type": "string"
+    },
+    "panel": {
+     "count": 1943,
+     "type": "string"
+    },
+    "hd_type": {
+     "count": 1525,
+     "type": "string"
+    },
+    "has_led_backlight": {
+     "count": 966,
+     "type": "boolean"
+    },
+    "has_touchscreen": {
+     "count": 1415,
+     "type": "boolean"
+    },
+    "brightness__cdm": {
+     "count": 2045,
+     "type": "integer"
+    },
+    "has_anti_reflection": {
+     "count": 1633,
+     "type": "boolean"
+    },
+    "max_refresh_rate__hz": {
+     "count": 288,
+     "type": "integer"
+    },
+    "has_free_sync": {
+     "count": 42,
+     "type": "boolean"
+    },
+    "pixel_density__ppi": {
+     "count": 260,
+     "type": "integer"
+    },
+    "has_dual_screen": {
+     "count": 52,
+     "type": "boolean"
+    },
+    "high_dynamic_range_hdr_technology": {
+     "count": 73,
+     "type": "string"
+    },
+    "contrast_ratio": {
+     "count": 151,
+     "type": "boolean, string"
+    },
+    "has_true_tone_technology": {
+     "count": 59,
+     "type": "boolean"
+    },
+    "has_g_sync": {
+     "count": 44,
+     "type": "boolean"
+    },
+    "has_adaptive_sync": {
+     "count": 34,
+     "type": "boolean"
+    }
+   },
+   "general": {
+    "count": 6392,
+    "ean": {
+     "count": 2844,
+     "type": "string"
+    },
+    "mpn": {
+     "count": 6392,
+     "type": "string"
+    },
+    "brand": {
+     "count": 6392,
+     "type": "string"
+    },
+    "year": {
+     "count": 1816,
+     "type": "integer"
+    },
+    "serie": {
+     "count": 1014,
+     "type": "string"
+    },
+    "use": {
+     "count": 647,
+     "type": "string"
+    }
+   },
+   "network": {
+    "count": 6392,
+    "bluetooth_version": {
+     "count": 4405,
+     "type": "decimal, integer"
+    },
+    "type_wlan_controller": {
+     "count": 1406,
+     "type": "string"
+    },
+    "type_antenna": {
+     "count": 1245,
+     "type": "string"
+    },
+    "has_bluetooth": {
+     "count": 2361,
+     "type": "boolean"
+    },
+    "wifi_standards": {
+     "count": 2352,
+     "type": "string"
+    },
+    "has_ethernet_lan": {
+     "count": 787,
+     "type": "boolean"
+    },
+    "ethernet_lan_speed__mbits": {
+     "count": 767,
+     "type": "string"
+    },
+    "manufacturer_wlan_controller": {
+     "count": 919,
+     "type": "string"
+    },
+    "has_mobile_connection": {
+     "count": 1277,
+     "type": "boolean"
+    },
+    "max_wireless_data_transfer_rate__mbits": {
+     "count": 77,
+     "type": "integer"
+    }
+   },
+   "storage": {
+    "count": 6392,
+    "type": {
+     "count": 6349,
+     "type": "string"
+    },
+    "capacity__gb": {
+     "count": 6380,
+     "type": "integer"
+    },
+    "ssd_capacity__gb": {
+     "count": 5383,
+     "type": "integer"
+    },
+    "number_of_ssd": {
+     "count": 2181,
+     "type": "integer"
+    },
+    "ssd_interfaces": {
+     "count": 1449,
+     "type": "string"
+    },
+    "compatible_memory_cards": {
+     "count": 2411,
+     "type": "string"
+    },
+    "has_integrated_memory_card_reader": {
+     "count": 1258,
+     "type": "boolean"
+    },
+    "has_nvme": {
+     "count": 1219,
+     "type": "boolean"
+    },
+    "is_storage_expandable": {
+     "count": 680,
+     "type": "boolean"
+    },
+    "hard_drive_accelerator": {
+     "count": 28,
+     "type": "boolean"
+    }
+   },
+   "keyboard": {
+    "count": 6392,
+    "type": {
+     "count": 4317,
+     "type": "string"
+    },
+    "color_light": {
+     "count": 3953,
+     "type": "string"
+    },
+    "has_numeric_keyboard": {
+     "count": 2683,
+     "type": "boolean"
+    },
+    "has_light": {
+     "count": 2627,
+     "type": "boolean"
+    },
+    "type_touchpad": {
+     "count": 2011,
+     "type": "string"
+    },
+    "has_touchpad": {
+     "count": 627,
+     "type": "boolean"
+    },
+    "has_touchbar": {
+     "count": 14,
+     "type": "boolean"
+    },
+    "has_programmable_keys": {
+     "count": 13,
+     "type": "boolean"
+    }
+   },
+   "security": {
+    "count": 6392,
+    "has_smart_card_reader": {
+     "count": 495,
+     "type": "boolean"
+    },
+    "has_option_for_cable_lock": {
+     "count": 904,
+     "type": "boolean"
+    },
+    "extra": {
+     "count": 330,
+     "type": "string"
+    },
+    "has_password_protection": {
+     "count": 599,
+     "type": "boolean"
+    },
+    "has_fingerprint_reader": {
+     "count": 948,
+     "type": "boolean"
+    }
+   },
+   "software": {
+    "count": 6392,
+    "os": {
+     "count": 6383,
+     "type": "string"
+    },
+    "available_software": {
+     "count": 557,
+     "type": "string"
+    },
+    "os_architecture__bit": {
+     "count": 1206,
+     "type": "integer"
+    },
+    "os_language": {
+     "count": 399,
+     "type": "string"
+    },
+    "trialsoftware": {
+     "count": 219,
+     "type": "string"
+    }
+   },
+   "measurements": {
+    "count": 6392,
+    "weight__g": {
+     "count": 6338,
+     "type": "integer, decimal"
+    },
+    "width__mm": {
+     "count": 5559,
+     "type": "integer, decimal"
+    },
+    "height__mm": {
+     "count": 5252,
+     "type": "integer, decimal"
+    },
+    "length__mm": {
+     "count": 5558,
+     "type": "integer, decimal"
+    },
+    "height_back__mm": {
+     "count": 232,
+     "type": "integer, decimal"
+    },
+    "height_front__mm": {
+     "count": 243,
+     "type": "integer, decimal"
+    }
+   },
+   "ports_interfaces": {
+    "count": 6392,
+    "number_of_hdmi": {
+     "count": 4739,
+     "type": "integer"
+    },
+    "has_thunderbolt": {
+     "count": 1828,
+     "type": "boolean"
+    },
+    "number_of_usb_a_gen_2": {
+     "count": 2308,
+     "type": "integer"
+    },
+    "number_of_usb_c_gen_2": {
+     "count": 2199,
+     "type": "integer"
+    },
+    "number_of_thunderbolt": {
+     "count": 1184,
+     "type": "integer"
+    },
+    "number_of_usb_a_gen_1": {
+     "count": 1431,
+     "type": "integer"
+    },
+    "number_of_ethernet_lan_rj_45": {
+     "count": 811,
+     "type": "integer"
+    },
+    "has_usb_c_displayport_alternative_modus": {
+     "count": 2133,
+     "type": "boolean"
+    },
+    "hdmi_version": {
+     "count": 967,
+     "type": "integer, decimal"
+    },
+    "charging_port_type": {
+     "count": 1038,
+     "type": "string"
+    },
+    "has_usb_power_delivery": {
+     "count": 820,
+     "type": "boolean"
+    },
+    "has_displayport": {
+     "count": 345,
+     "type": "boolean"
+    },
+    "has_powershare": {
+     "count": 68,
+     "type": "boolean"
+    },
+    "number_of_usb4_2x2": {
+     "count": 42,
+     "type": "integer"
+    },
+    "number_of_powershare": {
+     "count": 41,
+     "type": "integer"
+    },
+    "has_vga_port": {
+     "count": 83,
+     "type": "boolean"
+    },
+    "number_of_displayport_outputs_total": {
+     "count": 38,
+     "type": "integer"
+    },
+    "number_of_hdmi_hdcp_2_2_outputs": {
+     "count": 4,
+     "type": "integer"
+    }
+   },
+   "type": "null"
+  },
+  "images": {
+   "count": 6396,
+   "[]": {
+    "count": 8498,
+    "url": {
+     "count": 8498,
+     "type": "string"
+    }
+   }
+  },
+  "prices": {
+   "count": 6396,
+   "[]": {
+    "count": 8435,
+    "price": {
+     "count": 8435,
+     "type": "decimal, integer"
+    },
+    "old_price": {
+     "count": 8435,
+     "type": "decimal, integer"
+    },
+    "currency": {
+     "count": 8435,
+     "type": "string"
+    },
+    "url": {
+     "count": 8435,
+     "type": "string"
+    }
+   }
+  },
+  "spec_info": {
+   "count": 6396,
+   "type": "string"
+  },
+  "target_user": {
+   "count": 6396,
+   "type": "string"
+  }
+ }
+}

@@ -18,7 +18,6 @@ import cohere
 import numpy as np
 import pandas as pd
 import rich
-from cohere.embeddings import Embeddings
 from qdrant_client import QdrantClient
 from qdrant_client.http.exceptions import UnexpectedResponse
 from qdrant_client.models import Distance, VectorParams
@@ -240,5 +239,3 @@ if __name__ == "__main__":
             break
         results = searcher.search(text)
         print_results(results)
-    # print(type(result))
-    # print(result)
