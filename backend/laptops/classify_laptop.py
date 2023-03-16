@@ -8,21 +8,15 @@ naturals as if coming from a sales person.
 """
 
 
-import cohere
+from cohere import Client
 import os
 import threading
-from ..config import (
-    DATABASE,
-    LAPTOP_DB,
-    COHERE_API_KEY
-)
+from ..config import DATABASE, COHERE_API_KEY
 from cohere.classify import Example
 import json
 from pathlib import Path
 
-
-client = cohere.Client(COHERE_API_KEY)
-
+cohere = Client(COHERE_API_KEY)
 
 
 def classify_laptop_audio(audio_data) -> str:
@@ -39,34 +33,43 @@ def classify_laptop_audio(audio_data) -> str:
     has_microphone = audio_data.get("has_microphone", False)
     num_speakers = audio_data.get("number_of_speakers", 1)
     if num_speakers == 0:
-        pass
+        speakers_message = ""
     elif num_speakers == 1:
-        yield "Has a single built-in speaker."
+        speakers_message = "Has a single built-in speaker."
     else:
-        yield f"Has {num_speakers} built-in speakers."
+        speakers_message = f"Has {num_speakers} built-in speakers."
     num_headphone_outputs = audio_data.get("number_of_headphone_outputs", 0)
     if num_headphone_outputs == 0:
-        pass
+        headphone_message = ""
     elif num_headphone_outputs == 1:
-        yield "Has a single headphone jack."
+        headphone_message = "Has a single headphone jack."
     else:
-        yield f"Has {num_headphone_outputs} headphone jacks."
+        headphone_message = f"Has {num_headphone_outputs} headphone jacks."
     num_microphones = audio_data.get("number_of_microphones", 0)
     if num_microphones == 0:
-        pass
+        mic_message = ""
     elif num_microphones == 1:
-        yield "Has a single built-in microphone."
+        mic_message = "Has a single built-in microphone."
     else:
-        yield f"Has {num_microphones} built-in microphones."
+        mic_message = f"Has {num_microphones} built-in microphones."
     audio_chip_brand = audio_data.get("audiochip", "")
     determiner = "a"
     if audio_chip_brand:
         if audio_chip_brand.startswith(tuple("aeiou")):
             determiner = "an"
-        yield (
+        audio_chip_message = (
             f"This laptop uses {determiner} {audio_chip_brand} audio chip for"
             " audio."
         )
+    else:
+        audio_chip_message = ""
+    # Combine all the messages to form the final classification
+    classification = (
+        f"{speakers_message} {headphone_message}"
+        f" {mic_message} {audio_chip_message}".strip()
+    )
+    # Return the classification
+    return classification
 
 
 def classify_laptop_battery(battery_data) -> str:
@@ -84,35 +87,42 @@ def classify_laptop_battery(battery_data) -> str:
     charging_time = battery_data.get("charging_time__h", 0)
 
     if capacity == 0:
-        pass
+        capacity_message = ""
     elif capacity < 50:
-        yield "Has a small battery capacity."
+        capacity_message = "Has a small battery capacity."
     elif capacity < 100:
-        yield "Has an average battery capacity."
+        capacity_message = "Has an average battery capacity."
     else:
-        yield "Has a large battery capacity."
+        capacity_message = "Has a large battery capacity."
 
     if technology == "unspecified":
-        pass
+        technology_message = ""
     else:
-        yield f"The battery uses {technology} technology."
+        technology_message = f"the battery uses {technology} technology."
+
     if battery_life == 0:
-        pass
+        battery_life_message = ""
     elif battery_life < 5:
-        yield "The battery has a short life."
+        battery_life_message = "the battery has a short life."
     elif battery_life < 10:
-        yield "The battery has an average life."
+        battery_life_message = "the battery has an average life."
     else:
-        yield "The battery has a long life."
+        battery_life_message = "the battery has a long life."
 
     if charging_time == 0:
-        pass
+        charging_time_message = ""
     elif charging_time < 2:
-        yield "The battery charges quickly."
+        charging_time_message = "the battery charges quickly."
     elif charging_time < 4:
-        yield "The battery has an average charging time."
+        charging_time_message = "the battery has an average charging time."
     else:
-        yield "The battery takes a long time to charge."
+        charging_time_message = "the battery takes a long time to charge."
+
+    classification = (
+        f"{capacity_message} {technology_message} "
+        f"{battery_life_message} {charging_time_message} "
+    )
+    return classification
 
 
 def classify_laptop_camera(camera_data) -> str:
@@ -134,28 +144,29 @@ def classify_laptop_camera(camera_data) -> str:
     has_infrared = camera_data.get("has_infrared", False)
     has_privacy_camera = camera_data.get("has_privacy_camera", False)
 
+    messages = []
     if has_front_camera:
         if front_camera_megapixel and front_camera_resolution:
-            yield (
+            messages.append(
                 "Has front camera with "
                 f"{front_camera_megapixel}MP and {front_camera_resolution}p"
                 " resolution."
             )
         elif front_camera_megapixel:
-            yield (
+            messages.append(
                 "Has front camera with " f"{front_camera_megapixel}MP quality."
             )
         elif front_camera_resolution:
-            yield (
+            messages.append(
                 "Has front camera with "
                 f"{front_camera_resolution}p resolution."
             )
         else:
-            yield "Has front camera."
+            messages.append("Has front camera.")
     if has_back_camera:
-        yield "Has a back camera."
+        messages.append("Has a back camera.")
     if capturing_speed > 0:
-        yield f"The camera can capture at {capturing_speed} FPS."
+        messages.append(f"The camera can capture at {capturing_speed} FPS.")
     if has_infrared:
         messages.append("Has an infrared camera.")
     if has_privacy_camera:
@@ -560,25 +571,25 @@ def classify_laptop_ports_interface(ports_data) -> str:
     """
     port_types = []
     if ports_data.get("has_usb_a_gen_1", False):
-        yield "USB-A Gen 1"
+        port_types.append("USB-A Gen 1")
     if ports_data.get("has_usb_a_gen_2", False):
-        yield "USB-A Gen 2"
+        port_types.append("USB-A Gen 2")
     if ports_data.get("has_usb_c_gen_2", False):
-        yield "USB-C Gen 2"
+        port_types.append("USB-C Gen 2")
     if ports_data.get("has_usb_c_displayport_alternative_modus", False):
-        yield "USB-C DisplayPort alternative mode"
+        port_types.append("USB-C DisplayPort alternative mode")
     if ports_data.get("has_usb_power_delivery", False):
-        yield "USB Power Delivery"
+        port_types.append("USB Power Delivery")
     if ports_data.get("has_thunderbolt", False):
-        yield "Thunderbolt"
+        port_types.append("Thunderbolt")
     if ports_data.get("has_mini_displayport", False):
-        yield "Mini DisplayPort"
+        port_types.append("Mini DisplayPort")
     if ports_data.get("has_displayport", False):
-        yield "DisplayPort"
+        port_types.append("DisplayPort")
     if ports_data.get("has_dvi_poort", False):
-        yield "DVI"
+        port_types.append("DVI")
     if ports_data.get("has_vga_port", False):
-        yield "VGA"
+        port_types.append("VGA")
 
     if not port_types:
         return ""
@@ -603,19 +614,21 @@ def classify_laptop_security(security_data) -> str:
     has_password_protection = security_data.get("has_password_protection")
     has_smart_card_reader = security_data.get("has_smart_card_reader")
 
+    messages = []
+
     if has_fingerprint_reader:
-        yield "a fingerprint reader"
+        messages.append("a fingerprint reader")
     if has_option_for_cable_lock:
-        yield "cable lock"
+        messages.append("cable lock")
     if has_password_protection:
-        yield "password protection"
+        messages.append("password protection")
     if has_smart_card_reader:
-        yield "a smart card reader"
+        messages.append("a smart card reader")
 
     if len(messages) == 0:
-        yield "This laptop does not have any security features."
+        return "This laptop does not have any security features."
     else:
-        yield "This laptop has {}.".format(", ".join(messages))
+        return "This laptop has {}.".format(", ".join(messages))
 
 
 def classify_laptop_software(software_data) -> str:
@@ -633,19 +646,23 @@ def classify_laptop_software(software_data) -> str:
     available_software = software_data.get("available_software", "unspecified")
     trialsoftware = software_data.get("trialsoftware", "unspecified")
 
+    messages = []
+
     if os != "unspecified":
-        yield f"running {os} {os_architecture}-bit"
+        messages.append(f"running {os} {os_architecture}-bit")
         if os_language != "unspecified":
-            yield f"with {os_language} language pack"
+            messages.append(f"with {os_language} language pack")
 
     if available_software != "unspecified":
-        yield f"with {available_software} software pre-installed"
+        messages.append(f"with {available_software} software pre-installed")
 
     if trialsoftware != "unspecified":
-        yield f"with {trialsoftware} trial software pre-installed"
+        messages.append(f"with {trialsoftware} trial software pre-installed")
 
     if not messages:
-        yield "with unspecified software"
+        messages.append("with unspecified software")
+
+    return "This laptop comes {}.".format(" ".join(messages))
 
 
 def classify_laptop_storage(storage_data) -> str:
@@ -657,25 +674,26 @@ def classify_laptop_storage(storage_data) -> str:
     Returns:
         The classification
     """
+    messages = []
 
     # Check storage type and capacity
     storage_type = storage_data.get("type")
     storage_capacity = storage_data.get("capacity__gb")
     if storage_type and storage_capacity:
-        yield f"with a {storage_capacity} GB {storage_type} drive"
+        messages.append(f"with a {storage_capacity} GB {storage_type} drive")
 
     # Check if storage is expandable
     is_expandable = storage_data.get("is_storage_expandable", False)
     if is_expandable:
-        yield f"with expandable storage"
+        messages.append("with expandable storage")
 
     # Check if storage has NVMe and hard drive accelerator
     has_nvme = storage_data.get("has_nvme", False)
     has_hda = storage_data.get("hard_drive_accelerator", False)
     if has_nvme:
-        yield "with NVMe storage technology"
+        messages.append("with NVMe storage technology")
     if has_hda:
-        yield "with hard drive accelerator"
+        messages.append("with hard drive accelerator")
 
     # Check if storage has an integrated memory
     # card reader and compatible memory cards
@@ -684,7 +702,7 @@ def classify_laptop_storage(storage_data) -> str:
     if has_card_reader:
         messages.append("with an integrated memory card reader")
         if compatible_cards:
-            yield f"that supports {compatible_cards} memory cards"
+            messages.append(f"that supports {compatible_cards} memory cards")
 
     # Check if storage has SSDs and their capacity and interfaces
     num_ssds = storage_data.get("number_of_ssd", 0)
@@ -715,13 +733,13 @@ def classify_laptop_video(video) -> str:
     messages = []
 
     if video.get("has_4k_support", False):
-        yield f"with 4K video support")
+        messages.append("with 4K video support")
 
     if video.get("has_6k_support", False):
         messages.append("with 6K video support")
 
     if video.get("has_cuda", False):
-        yield f"with NVIDIA CUDA technology"
+        messages.append("with NVIDIA CUDA technology")
 
     has_video_card = False
 
@@ -762,8 +780,9 @@ def classify_laptop_video(video) -> str:
         messages.append(f"manufactured by {video['manufacturer']}")
 
     if not messages:
-        pass
+        return ""
 
+    return "This laptop comes {}.".format(" ".join(messages))
 
 
 def classify_based_on_specs(data: list[dict], status= None) -> list[list[str]]:
@@ -832,7 +851,8 @@ def classify_based_on_group(data: list[dict], status=None) -> list[list[str]]:
         a list of classifications for each laptop
     """
     
-    examples: list[Example] = []
+    examples = []
+    inputs = []
     classifications: list[list[str]] = []
 
     def classify(batch: list[str]):
@@ -867,7 +887,7 @@ def classify_based_on_group(data: list[dict], status=None) -> list[list[str]]:
     
     status.update("Fetching data...")
     # Extract the input texts from the input dictionaries
-    batch: list[str] = []
+    batch = []
     batch_count = 1
     for laptop in data:
         if len(batch) >= 96:
@@ -895,29 +915,33 @@ def classify_laptop(laptop: dict):
     yield f"This laptop would be a good fit for {laptop['target_user']}."
 
 
-def generate_description() -> str:
+def generate_description():
     """
     Generate description for laptop.
 
     Args:
         data: the data to use to generate the description
     """
-    data = json.loads(LAPTOP_DB.write_text(data))
-    for laptop in data:
-        desc = classify_laptop(laptop)
-        description_raw = " ".join(
-            c.strip() for c in desc)
-        response = cohere.summarize(
-            text=description_raw,
-            model="summarize-medium",
-            temperature=0.5,
-            extractiveness="high",
-            length="long"
-        )
-        laptop["description"] = response.summary
-    LAPTOP_DB.write_text(json.dumps(data))
+    from ..config import LAPTOP_DB
+    from rich import get_console
 
 
+    console = get_console()
 
-if __name__ == "__main__":
-    classify_laptops()
+
+    data = json.loads(LAPTOP_DB.read_text())
+    with console.status("blah...") as status:
+        for laptop in data:
+            status.update(f"Classifying laptop {laptop['id']}. ")
+            desc = classify_laptop(laptop)
+            description_raw = " ".join(
+                c.strip() for c in desc)
+            response = cohere.summarize(
+                text=description_raw,
+                model="summarize-medium",
+                temperature=0.5,
+                extractiveness="high",
+                length="long"
+            )
+            laptop["description"] = response.summary
+        LAPTOP_DB.write_text(json.dumps(data))
