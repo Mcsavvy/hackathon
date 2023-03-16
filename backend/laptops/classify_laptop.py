@@ -915,7 +915,7 @@ def classify_laptop(laptop: dict):
     yield f"This laptop would be a good fit for {laptop['target_user']}."
 
 
-def generate_description():
+def generate_description(id=None):
     """
     Generate description for laptop.
 
@@ -924,6 +924,7 @@ def generate_description():
     """
     from ..config import LAPTOP_DB
     from rich import get_console
+    import time
 
 
     console = get_console()
@@ -932,6 +933,11 @@ def generate_description():
     data = json.loads(LAPTOP_DB.read_text())
     with console.status("blah...") as status:
         for laptop in data:
+            if id and laptop["id"] != id:
+                continue
+            elif laptop["id"] == id:
+                id = None
+                continue
             status.update(f"Classifying laptop {laptop['id']}. ")
             desc = classify_laptop(laptop)
             description_raw = " ".join(
@@ -943,5 +949,7 @@ def generate_description():
                 extractiveness="high",
                 length="long"
             )
+            print(laptop["id"])
             laptop["description"] = response.summary
-        LAPTOP_DB.write_text(json.dumps(data))
+            time.sleep(2)
+            LAPTOP_DB.write_text(json.dumps(data))

@@ -12,9 +12,11 @@ tqdm = "*"
 bs4 = "*"
 requests = "*"
 rich = "*"
-types-requests = "*"
 aiohttp = "*"
-attrdict = "*"
+fastapi = "*"
+uvicorn = "*"
+typing = "*"
+pydantic = "*"
 
 [dev-packages]
 ipython = "*"
