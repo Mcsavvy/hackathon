@@ -1,0 +1,506 @@
+{
+ "[]": {
+  "count": 2504,
+  "id": {
+   "count": 2504,
+   "type": "integer"
+  },
+  "name": {
+   "count": 2504,
+   "type": "string"
+  },
+  "mpn": {
+   "count": 2504,
+   "type": "string"
+  },
+  "info": {
+   "count": 2504,
+   "type": "string"
+  },
+  "data": {
+   "count": 2504,
+   "cpu": {
+    "count": 2504,
+    "number_of_cores": {
+     "count": 2091,
+     "type": "integer"
+    },
+    "type": {
+     "count": 1080,
+     "type": "string"
+    },
+    "has_coprocessor": {
+     "count": 198,
+     "type": "boolean"
+    },
+    "type_coprocessor": {
+     "count": 146,
+     "type": "string"
+    },
+    "number_of_coprocessor": {
+     "count": 120,
+     "type": "integer"
+    },
+    "clock_speed__ghz": {
+     "count": 2,
+     "type": "decimal"
+    }
+   },
+   "other": {
+    "count": 2504,
+    "has_face_recognition": {
+     "count": 1184,
+     "type": "boolean"
+    },
+    "has_wireless_charging": {
+     "count": 1064,
+     "type": "boolean"
+    },
+    "can_be_used_underwater": {
+     "count": 472,
+     "type": "boolean"
+    },
+    "has_spoken_navigation_instructions": {
+     "count": 1727,
+     "type": "boolean"
+    },
+    "has_fingerprint_reader": {
+     "count": 1512,
+     "type": "boolean"
+    },
+    "has_headphone_jack": {
+     "count": 170,
+     "type": "boolean"
+    },
+    "is_water_resistant": {
+     "count": 721,
+     "type": "boolean"
+    },
+    "has_magsafe": {
+     "count": 125,
+     "type": "boolean"
+    },
+    "has_video_call": {
+     "count": 291,
+     "type": "boolean"
+    },
+    "has_fast_charge": {
+     "count": 406,
+     "type": "boolean"
+    },
+    "has_loudspeaker": {
+     "count": 334,
+     "type": "boolean"
+    },
+    "is_shock_resistant": {
+     "count": 249,
+     "type": "boolean"
+    },
+    "has_vibrating_alarm": {
+     "count": 349,
+     "type": "boolean"
+    },
+    "has_dialing_with_voice": {
+     "count": 182,
+     "type": "boolean"
+    }
+   },
+   "camera": {
+    "count": 2504,
+    "camera_back__mp": {
+     "count": 2419,
+     "type": "integer"
+    },
+    "camera_front__mp": {
+     "count": 2424,
+     "type": "integer"
+    },
+    "camera_back_amount": {
+     "count": 1864,
+     "type": "integer"
+    },
+    "camera_front_amount": {
+     "count": 1861,
+     "type": "integer"
+    },
+    "camera_back_type_flash": {
+     "count": 563,
+     "type": "string"
+    },
+    "camera_back_has_auto_focus": {
+     "count": 641,
+     "type": "boolean"
+    },
+    "camera_back_has_flash": {
+     "count": 478,
+     "type": "boolean"
+    },
+    "camera_back_resolution": {
+     "count": 341,
+     "type": "string"
+    },
+    "camera_back_digital_zoom": {
+     "count": 306,
+     "type": "integer"
+    },
+    "camera_back_has_panorama": {
+     "count": 199,
+     "type": "boolean"
+    },
+    "camera_back_has_geotagging": {
+     "count": 242,
+     "type": "boolean"
+    },
+    "camera_back_has_night_mode": {
+     "count": 327,
+     "type": "boolean"
+    },
+    "camera_back_max_frame_rate__fps": {
+     "count": 507,
+     "type": "integer"
+    },
+    "camera_back_has_time_lapse_modus": {
+     "count": 252,
+     "type": "boolean"
+    },
+    "camera_back_has_video_stabilizer": {
+     "count": 238,
+     "type": "boolean"
+    },
+    "camera_back_number_of_lens_elements": {
+     "count": 183,
+     "type": "integer"
+    },
+    "camera_back_type_image_stabilizer": {
+     "count": 122,
+     "type": "string"
+    },
+    "camera_back_has_time_lapse_mode": {
+     "count": 1,
+     "type": "boolean"
+    }
+   },
+   "design": {
+    "count": 2504,
+    "color": {
+     "count": 2504,
+     "type": "string"
+    },
+    "material": {
+     "count": 1478,
+     "type": "string"
+    },
+    "color_name": {
+     "count": 822,
+     "type": "string"
+    }
+   },
+   "battery": {
+    "count": 2504,
+    "capacity__mAh": {
+     "count": 2196,
+     "type": "integer"
+    },
+    "technology": {
+     "count": 555,
+     "type": "string"
+    },
+    "continuous_audio_playtime__h": {
+     "count": 237,
+     "type": "integer"
+    },
+    "continuous_video_playtime__h": {
+     "count": 243,
+     "type": "integer"
+    }
+   },
+   "display": {
+    "count": 2504,
+    "type": {
+     "count": 2276,
+     "type": "string"
+    },
+    "size__inch": {
+     "count": 2501,
+     "type": "decimal, integer"
+    },
+    "resolution__pixels": {
+     "count": 2344,
+     "type": "string"
+    },
+    "has_touchscreen": {
+     "count": 1090,
+     "type": "boolean"
+    },
+    "refresh_rate__hz": {
+     "count": 442,
+     "type": "integer"
+    },
+    "has_gorilla_glass": {
+     "count": 260,
+     "type": "boolean"
+    },
+    "pixel_density__ppi": {
+     "count": 625,
+     "type": "integer"
+    },
+    "shape": {
+     "count": 474,
+     "type": "string"
+    },
+    "contrast_ratio": {
+     "count": 344,
+     "type": "string"
+    },
+    "brightness__cdm": {
+     "count": 332,
+     "type": "integer"
+    },
+    "fingerprint_resistant": {
+     "count": 179,
+     "type": "boolean"
+    }
+   },
+   "general": {
+    "count": 2504,
+    "mpn": {
+     "count": 2500,
+     "type": "string"
+    },
+    "year": {
+     "count": 1569,
+     "type": "integer"
+    },
+    "brand": {
+     "count": 2504,
+     "type": "string"
+    },
+    "use": {
+     "count": 442,
+     "type": "string"
+    },
+    "serie": {
+     "count": 386,
+     "type": "string"
+    }
+   },
+   "network": {
+    "count": 2504,
+    "has_nfc": {
+     "count": 1990,
+     "type": "boolean"
+    },
+    "has_wifi": {
+     "count": 2331,
+     "type": "boolean"
+    },
+    "has_dual_sim": {
+     "count": 1618,
+     "type": "boolean"
+    },
+    "type_sim_card": {
+     "count": 2366,
+     "type": "string"
+    },
+    "bluetooth_version": {
+     "count": 2087,
+     "type": "integer, decimal"
+    },
+    "has_bluetooth": {
+     "count": 2179,
+     "type": "boolean"
+    },
+    "wifi_standards": {
+     "count": 442,
+     "type": "string"
+    },
+    "has_mimo": {
+     "count": 285,
+     "type": "boolean"
+    },
+    "has_volte": {
+     "count": 253,
+     "type": "boolean"
+    },
+    "has_airplay": {
+     "count": 171,
+     "type": "boolean"
+    },
+    "has_ibeacon": {
+     "count": 171,
+     "type": "boolean"
+    },
+    "3g_standards": {
+     "count": 444,
+     "type": "string"
+    },
+    "4g_standards": {
+     "count": 491,
+     "type": "string"
+    },
+    "sim_card_capacity": {
+     "count": 470,
+     "type": "string"
+    },
+    "generation_mobile_network": {
+     "count": 495,
+     "type": "string"
+    }
+   },
+   "sensors": {
+    "count": 2504,
+    "has_accelerometer": {
+     "count": 704,
+     "type": "boolean"
+    },
+    "has_ambient_light_sensor": {
+     "count": 696,
+     "type": "boolean"
+    },
+    "has_barometer": {
+     "count": 232,
+     "type": "boolean"
+    },
+    "has_gyroscope": {
+     "count": 414,
+     "type": "boolean"
+    },
+    "has_proximity_sensor": {
+     "count": 448,
+     "type": "boolean"
+    },
+    "has_hall_sensor": {
+     "count": 1,
+     "type": "boolean"
+    }
+   },
+   "storage": {
+    "count": 2504,
+    "capacity__gb": {
+     "count": 2496,
+     "type": "integer"
+    },
+    "compatible_memory_cards": {
+     "count": 1374,
+     "type": "string"
+    }
+   },
+   "software": {
+    "count": 2504,
+    "os": {
+     "count": 2478,
+     "type": "string"
+    },
+    "platform": {
+     "count": 497,
+     "type": "string"
+    },
+    "virtual_assistant": {
+     "count": 295,
+     "type": "string"
+    },
+    "app_distribution_platform": {
+     "count": 293,
+     "type": "string"
+    },
+    "available_software": {
+     "count": 34,
+     "type": "string"
+    }
+   },
+   "navigation": {
+    "count": 2504,
+    "has_gps": {
+     "count": 2424,
+     "type": "boolean"
+    },
+    "has_a_gps": {
+     "count": 1559,
+     "type": "boolean"
+    },
+    "has_beidou": {
+     "count": 390,
+     "type": "boolean"
+    },
+    "has_galileo": {
+     "count": 424,
+     "type": "boolean"
+    },
+    "has_glonass": {
+     "count": 435,
+     "type": "boolean"
+    },
+    "has_electronic_compass": {
+     "count": 292,
+     "type": "boolean"
+    }
+   },
+   "measurements": {
+    "count": 2504,
+    "weight__g": {
+     "count": 2171,
+     "type": "integer, decimal"
+    },
+    "width__mm": {
+     "count": 1057,
+     "type": "decimal, integer"
+    },
+    "height__mm": {
+     "count": 1036,
+     "type": "decimal, integer"
+    },
+    "length__mm": {
+     "count": 1061,
+     "type": "decimal, integer"
+    }
+   },
+   "ports_interfaces": {
+    "count": 2504,
+    "type_of_connector": {
+     "count": 2240,
+     "type": "string"
+    },
+    "has_lightning_connector": {
+     "count": 171,
+     "type": "boolean"
+    },
+    "has_usb": {
+     "count": 325,
+     "type": "boolean"
+    }
+   }
+  },
+  "images": {
+   "count": 2504,
+   "[]": {
+    "count": 3658,
+    "url": {
+     "count": 3658,
+     "type": "string"
+    }
+   }
+  },
+  "prices": {
+   "count": 2504,
+   "[]": {
+    "count": 3867,
+    "price": {
+     "count": 3867,
+     "type": "decimal, integer, null"
+    },
+    "old_price": {
+     "count": 3867,
+     "type": "decimal, integer, null"
+    },
+    "currency": {
+     "count": 3867,
+     "type": "string"
+    },
+    "url": {
+     "count": 3867,
+     "type": "string"
+    }
+   }
+  }
+ }
+}

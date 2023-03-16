@@ -8,18 +8,15 @@ naturals as if coming from a sales person.
 """
 
 
-import cohere
+from cohere import Client
 import os
 import threading
-from config import DATABASE
+from ..config import DATABASE, COHERE_API_KEY
 from cohere.classify import Example
 import json
 from pathlib import Path
 
-
-LAPTOP_DATABASE = DATABASE.joinpath("laptops_raw.json")
-client = cohere.Client(os.environ["COHERE_API_KEY"])
-
+cohere = Client(COHERE_API_KEY)
 
 
 def classify_laptop_audio(audio_data) -> str:
@@ -909,22 +906,50 @@ def classify_based_on_group(data: list[dict], status=None) -> list[list[str]]:
     return classifications
 
 
-def main():
-    import rich
+def classify_laptop(laptop: dict):
+    yield f"This laptops's name is {laptop['name']}."
+    yield f"This laptops model is {laptop['mpn']}"
+    if laptop["info"]:
+        yield laptop["info"]
+    yield laptop["spec_info"]
+    yield f"This laptop would be a good fit for {laptop['target_user']}."
 
-    console = rich.get_console()
-    FILE = DATABASE.joinpath("laptops_raw.json")
-    GROUP_DB = DATABASE.joinpath(
-        "laptops_classified_by_groups.json")
-    SPECS_DB = DATABASE.joinpath(
-        "laptops_classified_by_specs.json")
-    with console.status("Classifying data...") as status:
-        data = json.loads(FILE.read_text())[:]
-        group_classifications = classify_based_on_group(data, status)
-        specs_classifications = classify_based_on_specs(data, status)
-        GROUP_DB.write_text(json.dumps(group_classifications, indent=1))
-        SPECS_DB.write_text(json.dumps(specs_classifications, indent=1))
-    
 
-if __name__ == "__main__":
-    main()
+def generate_description(id=None):
+    """
+    Generate description for laptop.
+
+    Args:
+        data: the data to use to generate the description
+    """
+    from ..config import LAPTOP_DB
+    from rich import get_console
+    import time
+
+
+    console = get_console()
+
+
+    data = json.loads(LAPTOP_DB.read_text())
+    with console.status("blah...") as status:
+        for laptop in data:
+            if id and laptop["id"] != id:
+                continue
+            elif laptop["id"] == id:
+                id = None
+                continue
+            status.update(f"Classifying laptop {laptop['id']}. ")
+            desc = classify_laptop(laptop)
+            description_raw = " ".join(
+                c.strip() for c in desc)
+            response = cohere.summarize(
+                text=description_raw,
+                model="summarize-medium",
+                temperature=0.5,
+                extractiveness="high",
+                length="long"
+            )
+            print(laptop["id"])
+            laptop["description"] = response.summary
+            time.sleep(2)
+            LAPTOP_DB.write_text(json.dumps(data))
