@@ -3,8 +3,7 @@ is basically a wrapper function for our searcher and a fast api
 which broadcasts our information."""
 from fastapi import FastAPI
 import uvicorn
-from backend.neural_search import NeuralSearcher
-from backend.generate_response import interpret
+from .neural_search import NeuralSearcher
 import search_bar
 
 
