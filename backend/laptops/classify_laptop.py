@@ -922,29 +922,36 @@ def generate_description():
     Args:
         data: the data to use to generate the description
     """
-    from ..config import LAPTOP_DB
+    from ..config import LAPTOP_DB, COHERE_API_KEYS
     from rich import get_console
     import time
+    from itertools import cycle
 
 
     console = get_console()
+    api_key = cycle(COHERE_API_KEYS)
+    cohere = Client(next(api_key), check_api_key=False)
 
 
     data = json.loads(LAPTOP_DB.read_text())
     count = 0
-    with console.status("blah...") as status:
+    lcount = 0
+    length = len(data)
+    with console.status("...") as status:
         for laptop in data:
+            lcount += 1
             if laptop.get("description"):
                 continue
             if count >= 5:
-                console.log("sleeping 💤💤")
-                time.sleep(60)
-                console.log("waking up!")
+                console.log("rotating 🔃🔃")
+                cohere = Client(next(api_key), check_api_key=False)
                 count = 0
-            status.update(f"Classifying laptop {laptop['id']}. ")
+            status.update(f"Classifying laptop {lcount}. ")
             desc = classify_laptop(laptop)
             description_raw = " ".join(
                 c.strip() for c in desc)
+            while len(description_raw) < 250:
+                description_raw += " " + description_raw
             response = cohere.summarize(
                 text=description_raw,
                 model="summarize-medium",
@@ -954,5 +961,5 @@ def generate_description():
             )
             laptop["description"] = response.summary
             LAPTOP_DB.write_text(json.dumps(data))
-            console.log(f"Finished laptop {laptop['id']} ✔")
+            console.log(f"Finished laptop {lcount} of {length} ✔")
             count += 1
