@@ -16,7 +16,7 @@ from cohere import Client as CohereClient
 import numpy as np
 import pandas as pd
 import rich
-from cohere.embeddings import Embeddings
+# from cohere.embeddings import Embeddings
 from qdrant_client import QdrantClient
 from qdrant_client.http.exceptions import UnexpectedResponse
 from qdrant_client.models import Distance, VectorParams
@@ -25,7 +25,7 @@ from rich.progress import Progress
 from rich import get_console
 from tqdm import tqdm
 from rich import box
-from IPython.terminal.embed import embed
+# from IPython.terminal.embed import embed
 from collections import defaultdict
 
 

@@ -12,7 +12,7 @@ from cohere import Client
 import os
 import threading
 from ..config import DATABASE, COHERE_API_KEY
-from cohere.classify import Example
+# from cohere.classify import Example
 import json
 from pathlib import Path
 
@@ -951,5 +951,5 @@ def generate_description(id=None):
             )
             print(laptop["id"])
             laptop["description"] = response.summary
-            time.sleep(2)
+            time.sleep(60)
             LAPTOP_DB.write_text(json.dumps(data))
