@@ -12,7 +12,7 @@ from cohere import Client
 import os
 import threading
 from ..config import DATABASE, COHERE_API_KEY
-# from cohere.classify import Example
+from cohere.client import ClassifyExample
 import json
 from pathlib import Path
 
@@ -915,7 +915,7 @@ def classify_laptop(laptop: dict):
     yield f"This laptop would be a good fit for {laptop['target_user']}."
 
 
-def generate_description(id=None):
+def generate_description():
     """
     Generate description for laptop.
 
@@ -931,13 +931,16 @@ def generate_description(id=None):
 
 
     data = json.loads(LAPTOP_DB.read_text())
+    count = 0
     with console.status("blah...") as status:
         for laptop in data:
-            if id and laptop["id"] != id:
+            if laptop.get("description"):
                 continue
-            elif laptop["id"] == id:
-                id = None
-                continue
+            if count >= 5:
+                console.log("sleeping 💤💤")
+                time.sleep(60)
+                console.log("waking up!")
+                count = 0
             status.update(f"Classifying laptop {laptop['id']}. ")
             desc = classify_laptop(laptop)
             description_raw = " ".join(
@@ -949,7 +952,7 @@ def generate_description(id=None):
                 extractiveness="high",
                 length="long"
             )
-            print(laptop["id"])
             laptop["description"] = response.summary
-            time.sleep(60)
             LAPTOP_DB.write_text(json.dumps(data))
+            console.log(f"Finished laptop {laptop['id']} ✔")
+            count += 1

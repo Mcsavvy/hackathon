@@ -60,4 +60,4 @@ while False:
     results = searcher.search(text)
     print_results(results)
 
-generate_description(704)
+generate_description()
