@@ -4,14 +4,21 @@ We learned and implemented Co:here and qdrant for the lablab ai hackthon
 
 # FILES
 
-[backend](https://github.com/Mcsavvy/hackathon/tree/main/backend)
-[salesman](https://github.com/Mcsavvy/hackathon/tree/main/salesman)
-[.gitignore](https://github.com/Mcsavvy/hackathon/tree/main/.gitignore)
-[Pipfile](https://github.com/Mcsavvy/hackathon/tree/main/Pipfile)
-[Pipfile.lock](https://github.com/Mcsavvy/hackathon/tree/main/Pipfile.lock)
-[__init__.py](https://github.com/Mcsavvy/hackathon/tree/main/__init__.py)
-[classifications.md](https://github.com/Mcsavvy/hackathon/tree/main/classifications.md)
-[requirements.txt](https://github.com/Mcsavvy/hackathon/tree/main/requirements.txt)
+* [backend](https://github.com/Mcsavvy/hackathon/tree/main/backend)
+
+* [salesman](https://github.com/Mcsavvy/hackathon/tree/main/salesman)
+
+* [.gitignore](https://github.com/Mcsavvy/hackathon/tree/main/.gitignore)
+
+* [Pipfile](https://github.com/Mcsavvy/hackathon/tree/main/Pipfile)
+
+* [Pipfile.lock](https://github.com/Mcsavvy/hackathon/tree/main/Pipfile.lock)
+
+* [__init__.py](https://github.com/Mcsavvy/hackathon/tree/main/__init__.py)
+
+* [classifications.md](https://github.com/Mcsavvy/hackathon/tree/main/classifications.md)
+
+* [requirements.txt](https://github.com/Mcsavvy/hackathon/tree/main/requirements.txt)
 
 
 # DESCRIPTION
