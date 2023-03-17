@@ -18,7 +18,7 @@ from .schema import walk_json_tree
 searcher = NeuralSearcher(config.LAPTOPS_COLLECTION_NAME)
 console = rich.get_console()
 
-@click.group(i)
+@click.group()
 def cli():
     """Operate Salesman from command line."""
     pass
