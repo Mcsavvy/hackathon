@@ -1,33 +1,19 @@
 """This module contains two major functions, our run funtion which
 is basically a wrapper function for our searcher and a fast api
 which broadcasts our information."""
-import uvicorn
-from fastapi import FastAPI
 
-from .config import LAPTOPS_COLLECTION_NAME
+from flask import Flask, jsonify
 from .laptops.embed_laptops import NeuralSearcher
+from .config import LAPTOPS_COLLECTION_NAME
 
 
-def run(query):
-    """This takes a query and searches it with the aid of our neural searcher
-    It then converts the information into a user friendly message useing our interpret
-    function and then returns a json response consisting of image and description pairs
-    """
-    results = search_bar.search(query)
-    response = []
-    for result in results:
-        temp_dict = {}
-        message = interpret(result)
-        temp_dict.update(description=message)
-        temp_dict.update(images=result["img"])
-        response.append(result)
-    return response
-
-
-salesman = FastAPI()
+app = Flask(__name__)
 searcher = NeuralSearcher(LAPTOPS_COLLECTION_NAME)
 
+@app.route('/search/<query>', methods=['GET'])
+def search(query):
+    return jsonify({'recommendations': searcher.search(query)})
 
-@salesman.get("/search/{query}")
-async def perfect_salesman(query):
-    return {"recommendations": searcher.search(query)}
+if __name__ == '__main__':
+    app.run(debug=True)
+

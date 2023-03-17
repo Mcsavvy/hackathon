@@ -1,12 +1,11 @@
 import rich
-import uvicorn
 import click
 from qdrant_client import QdrantClient
 from rich import box
 from rich.panel import Panel
 
 from . import config
-from .api import salesman
+from .api import app
 from .laptops.embed_laptops import (
     NeuralSearcher,
     cohere,
@@ -65,7 +64,7 @@ def interactive():
 
 def web():
     """Serve Salesmam On The Web."""
-    uvicorn.run(salesman, host="localhost", port=8000)
+    app.run()
 
 
 web()
