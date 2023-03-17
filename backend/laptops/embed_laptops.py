@@ -38,6 +38,8 @@ def embed_laptops() -> None:
         _payloads = []
         for datapoint in ("name", "mpn", "info", "description"):
             _payloads.append(laptop[datapoint])
+        _payloads.append(
+                classify_laptop_price(laptop["prices"]))
         payloads.append(" ".join(_payloads))
 
     batch_counter = 1
@@ -96,6 +98,36 @@ def upload_to_cluster():
         parallel=10,
     )
     console.log("Done ✔")
+
+
+def classify_laptop_price(prices) -> str:
+    """
+    Classify laptop price.
+
+    Args:
+        prices: the list of prices to classify
+    Returns:
+        The classification
+    """
+    if not prices:
+        return "This laptop is mid-range."
+
+    price_values = []
+    for price in prices:
+        price_value = price.get("price")
+        if price_value:
+            price_values.append(float(price_value))
+
+    if not price_values:
+        return "No price information available."
+
+    avg_price = sum(price_values) / len(price_values)
+    if avg_price < 500:
+        return "This laptop is very affordable."
+    elif avg_price < 1000:
+        return "This laptop is moderately priced."
+    else:
+        return "This laptop is expensive."
 
 
 class NeuralSearcher:
