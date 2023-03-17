@@ -1,49 +1,105 @@
-# HACKATHON
+# Project Title
 
-We learned and implemented Co:here and qdrant for the lablab ai hackthon
+Salesman: A Multilingual Semantic Search Vectors Gadgets Recommendation Application
 
-# FILES
+## Table of Contents
 
-* [backend](https://github.com/Mcsavvy/hackathon/tree/main/backend)
+- [Project Description](#project-description)
+- [Installation](#installation)
+- [Usage](#usage)
+- [API Reference](#api-reference)
+- [Contributing](#contributing)
+- [License](/LICENSE)
 
-* [salesman](https://github.com/Mcsavvy/hackathon/tree/main/salesman)
+## Project Description
 
-* [.gitignore](https://github.com/Mcsavvy/hackathon/tree/main/.gitignore)
+Salesman is a gadgets recommendation application that uses multilingual semantic search vectors to help users find the perfect gadgets for their needs. The application allows users to input their desired specifications and preferences, and returns a list of laptops that match those criteria. Salesman uses advanced AI and machine learning algorithms to provide accurate and personalized laptop recommendations to users.
 
-* [Pipfile](https://github.com/Mcsavvy/hackathon/tree/main/Pipfile)
+## Installation
 
-* [Pipfile.lock](https://github.com/Mcsavvy/hackathon/tree/main/Pipfile.lock)
+To install Salesman, follow these steps:
+> NOTE: You would need to have python version 3.10 upwards installed.
 
-* [__init__.py](https://github.com/Mcsavvy/hackathon/tree/main/__init__.py)
+```sh
+git clone https://github.com/mcsavvy/salesman.git
+cd salesman
+pipenv install
+```
 
-* [classifications.md](https://github.com/Mcsavvy/hackathon/tree/main/classifications.md)
+## Usage
 
-* [requirements.txt](https://github.com/Mcsavvy/hackathon/tree/main/requirements.txt)
+### From The Commandline
+
+```sh
+pipenv run salesman interactive
+
+# limit the number of output (default: 5)
+
+pipenv run salesman interactive --limit 10
+
+# produce output in json format
+
+pipenv run salesman interactive --json
+```
+
+### To Serve API
+
+```sh
+pipenv run salesman web
+
+# You can optionally specify host and port
+
+pipenv run salesman web --host 0.0.0.0 --port 80
+```
 
 
-# DESCRIPTION
-This is a **Gadget Communication Finder** called ***Salesman***. ***Salesman*** takes in a description of a gadget and gives the user products/gadgets according to the description given.
+## Contributing
 
-# HOW WE HANDLED OUR DATA
-
-## Web scraping
-We scraped out data from site's that sells these gadgets to use in our software.
-
-## API
-But the data we scraped didn't seem complete, So we used an [API](https://github.com/Mcsavvy/hackathon/blob/main/backend/api.py) to generate.
-
-## CLASSIFY DATA
-After getting all the details we need, We then trained and wrote classifications and descriptions with **cohere** to train our model to give meaningful responses suitable for different users **e.g**: Sudents, Business owners etc...
-For more info ceck check out:
-[classifications.md](https://github.com/Mcsavvy/hackathon/blob/main/classifications.md)
+If you would like to contribute to Salesman, please go through [this](/Contributing.md) first.
 
 
-## EMNBEDDING DATA
-.....
+## License
 
-## SCHEMAS
-We created [schemas](https://github.com/Mcsavvy/hackathon/tree/main/backend/schemas) to give us a better layout of what the data looks like.
+Salesman is licensed under the **MIT** license. See the [licence](/LICENSE) file for more information.
 
-## PRICE
-The prices were in USD/EUR, we needed just USD so we converted the EUR to USD.
-See [converter.py](https://github.com/Mcsavvy/hackathon/blob/main/backend/database/currency_converter.py)
+## Contact
+
+If you have any questions or concerns about Salesman, please contact any of the developers.
+
+- [Uguwanyi Afam](mailto:phyrokelstein@gmail.com)
+- [Kasiemobi](/)
+- [Emmanuel Myles](mailto:cyrile450@gmail.com)
+- [Dave Mcsavvy](mailto:davemcsavvii@gmail.com)
+
+## Tools Used
+
+### Cohere
+We used [Cohere](https://cohere.ai/) to do a series of tasks:
+
+- To classify gadgets. Check [here](/classifications.md) to see what and what was classified.
+
+- To summarize different details of a gadget into one complete paragraph.
+
+- To embed payloads.
+
+- To embed queries.
+
+
+### Qdrant
+We used [Qdrant](http://qdrant.tech/) in the following ways:
+
+- **Qdrant** acted as a host for our embeddings and also the payload data.
+
+- **Qdrant** also did vector search and filtering based on queries.
+
+### Flask
+[Flask](https://flask.palletsprojects.com/) was used to serve our api.
+
+### Rich
+[Rich](https://rich.readthedocs.io/en/latest/) was used to display colorful content and beautiful layouts of data in the terminal.
+
+### Click
+[Click](https://click.palletsprojects.com/en) was used to create the amazing commandline interface.
+
+### Requests & Aiohttp
+For the initial fetching of data [Requests](https://requests.readthedocs.io/) came to the rescue. However, as we needed to go faster, we had to use [Aiohttp](https://docs.aiohttp.org/)
