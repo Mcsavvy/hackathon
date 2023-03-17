@@ -182,6 +182,15 @@ class NeuralSearcher:
             for laptop in self.data:
                 if laptop["id"] == hit.id:
                     break
-            laptop["description"] = translator.translate(laptop["description"])
+            if lang != "en":
+                desc = laptop['description']
+                if len(desc) > 400:
+                    index = desc.find(" ", 400)
+                    first = translator.translate(desc[:index])
+                    second = translator.translate(desc[index + 1:])
+                    desc = first + " " + second
+                    laptop['description'] = desc
+                else:
+                    laptop["description"] = translator.translate(laptop["description"])
             payloads.append(laptop)
         return payloads
