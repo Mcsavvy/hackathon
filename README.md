@@ -15,8 +15,7 @@ We learned and implemented Co:here and qdrant for the lablab ai hackthon
 
 
 # DESCRIPTION
-
-    This is a **Gadget Communication Finder** called ***Salesman***. ***Salesman*** takes in a description of a gadget and gives the user products/gadgets according to the description given.
+This is a **Gadget Communication Finder** called ***Salesman***. ***Salesman*** takes in a description of a gadget and gives the user products/gadgets according to the description given.
 
 # HOW WE HANDLED OUR DATA
 
