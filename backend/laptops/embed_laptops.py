@@ -147,7 +147,7 @@ class NeuralSearcher:
         self.qdrant_client = qdrant
         self.data = json.loads(LAPTOP_DB.read_text())
 
-    def search(self, text: str):
+    def search(self, text: str, limit=5):
         """
         Query the database.
 
@@ -164,7 +164,7 @@ class NeuralSearcher:
             query_vector=np.array(vector),
             with_payload=False,
             query_filter=None,  # We don't want any filters for now
-            limit=5,  # 5 the most closest results is enough
+            limit=limit,  # 5 the most closest results is enough
         )
         # print(search_result[0])
         # print("\n---\n")

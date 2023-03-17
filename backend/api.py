@@ -2,7 +2,7 @@
 is basically a wrapper function for our searcher and a fast api
 which broadcasts our information."""
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from .laptops.embed_laptops import NeuralSearcher
 from .config import LAPTOPS_COLLECTION_NAME
 from flask_cors import CORS
@@ -14,8 +14,8 @@ searcher = NeuralSearcher(LAPTOPS_COLLECTION_NAME)
 
 @app.route('/search/<query>', methods=['GET'])
 def search(query):
-    return jsonify({'recommendations': searcher.search(query)})
-
-if __name__ == '__main__':
-    app.run(debug=True)
-
+    limit = request.args.get("limit", 5)
+    limit = int(limit)
+    return jsonify({
+        'recommendations': searcher.search(query, limit=limit)
+    })

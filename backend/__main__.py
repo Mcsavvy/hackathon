@@ -18,7 +18,7 @@ from .schema import walk_json_tree
 searcher = NeuralSearcher(config.LAPTOPS_COLLECTION_NAME)
 console = rich.get_console()
 
-@click.group()
+@click.group(i)
 def cli():
     """Operate Salesman from command line."""
     pass
@@ -68,8 +68,12 @@ def print_results(results: list):
         rich.print(panel)
     console.rule()
 
+
 @cli.command()
-def interactive():
+@click.option('-l', '--limit',
+    type=int, help="limit the number of results", default=5)
+@click.option('-j', '--json', is_flag=True, help="produce output in json format")
+def interactive(limit, json):
     """Run SalesMan interactively."""
     while True:
         try:
@@ -77,13 +81,26 @@ def interactive():
         except (EOFError, KeyboardInterrupt):
             print()
             break
-        results = searcher.search(text)
-        print_results(results)
+        results = searcher.search(text, limit=limit)
+        if json:
+            print(results)
+        else:
+            print_results(results)
+
 
 @cli.command()
-def web():
+@click.option('--host', help="host to use")
+@click.option('--port', help="port to use")
+def web(host, port):
     """Serve Salesman on the web."""
-    app.run()
+    if host and port:
+        app.run(host=host, port=port)
+    elif host:
+        app.run(host=host)
+    elif port:
+        app.run(port=port)
+    else:
+        app.run()
 
 
 cli()
