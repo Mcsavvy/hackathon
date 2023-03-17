@@ -6,3 +6,4 @@ cohere
 rich
 click
 aiohttp
+flask-cors

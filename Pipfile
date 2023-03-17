@@ -15,6 +15,7 @@ typing = "*"
 pydantic = "*"
 click = "*"
 flask = "*"
+flask-cors = "*"
 
 [dev-packages]
 ipython = "*"

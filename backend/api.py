@@ -5,9 +5,11 @@ which broadcasts our information."""
 from flask import Flask, jsonify
 from .laptops.embed_laptops import NeuralSearcher
 from .config import LAPTOPS_COLLECTION_NAME
+from flask_cors import CORS
 
 
 app = Flask(__name__)
+CORS(app)
 searcher = NeuralSearcher(LAPTOPS_COLLECTION_NAME)
 
 @app.route('/search/<query>', methods=['GET'])
