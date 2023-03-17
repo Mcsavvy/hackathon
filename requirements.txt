@@ -1,0 +1,8 @@
+flask
+gunicorn
+qdrant-client
+numpy
+cohere
+rich
+click
+aiohttp
