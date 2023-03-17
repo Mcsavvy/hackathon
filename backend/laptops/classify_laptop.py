@@ -8,13 +8,15 @@ naturals as if coming from a sales person.
 """
 
 
-from cohere import Client
+import json
 import os
 import threading
-from ..config import DATABASE, COHERE_API_KEY
-from cohere.client import ClassifyExample
-import json
 from pathlib import Path
+
+from cohere import Client
+from cohere.client import ClassifyExample
+
+from ..config import COHERE_API_KEY, DATABASE
 
 cohere = Client(COHERE_API_KEY)
 
@@ -58,8 +60,7 @@ def classify_laptop_audio(audio_data) -> str:
         if audio_chip_brand.startswith(tuple("aeiou")):
             determiner = "an"
         audio_chip_message = (
-            f"This laptop uses {determiner} {audio_chip_brand} audio chip for"
-            " audio."
+            f"This laptop uses {determiner} {audio_chip_brand} audio chip for" " audio."
         )
     else:
         audio_chip_message = ""
@@ -158,8 +159,7 @@ def classify_laptop_camera(camera_data) -> str:
             )
         elif front_camera_resolution:
             messages.append(
-                "Has front camera with "
-                f"{front_camera_resolution}p resolution."
+                "Has front camera with " f"{front_camera_resolution}p resolution."
             )
         else:
             messages.append("Has front camera.")
@@ -245,9 +245,7 @@ def classify_laptop_design(design_data) -> str:
         else ""
     )
     material_message = (
-        f"The laptop is made of {material}."
-        if material != "unspecified"
-        else ""
+        f"The laptop is made of {material}." if material != "unspecified" else ""
     )
 
     classification = f"{color_message} {material_message}".strip()
@@ -546,8 +544,7 @@ def classify_laptop_network(network_data) -> str:
         )
     if manufacturer_wlan_controller != "unknown":
         classification += (
-            "a WLAN controller manufactured by "
-            f"{manufacturer_wlan_controller}, "
+            "a WLAN controller manufactured by " f"{manufacturer_wlan_controller}, "
         )
     if type_antenna != "unknown":
         classification += f"a {type_antenna} antenna, "
@@ -767,10 +764,7 @@ def classify_laptop_video(video) -> str:
             max_memory_bandwidth_gbs = video.get("max_memory_bandwidth__gbs")
             if max_memory_bandwidth_gbs:
                 messages.append(
-                    (
-                        "with max memory bandwidth of "
-                        f"{max_memory_bandwidth_gbs}GB/s"
-                    )
+                    ("with max memory bandwidth of " f"{max_memory_bandwidth_gbs}GB/s")
                 )
 
     if video.get("has_nvidia_max_q", False):
@@ -785,7 +779,7 @@ def classify_laptop_video(video) -> str:
     return "This laptop comes {}.".format(" ".join(messages))
 
 
-def classify_based_on_specs(data: list[dict], status= None) -> list[list[str]]:
+def classify_based_on_specs(data: list[dict], status=None) -> list[list[str]]:
     """
     Classify laptop based on it's specs.
 
@@ -811,10 +805,21 @@ def classify_based_on_specs(data: list[dict], status= None) -> list[list[str]]:
     """
     classifications: list[list[str]] = []
     specs: tuple[str, ...] = (
-        "audio", "camera", "video", "design", "memory",
-        "battery", "display", "network", "storage",
-        "keyboard", "security", "software", "measurements",
-        "ports_interface", "cpu"
+        "audio",
+        "camera",
+        "video",
+        "design",
+        "memory",
+        "battery",
+        "display",
+        "network",
+        "storage",
+        "keyboard",
+        "security",
+        "software",
+        "measurements",
+        "ports_interface",
+        "cpu",
     )
     for laptop in data:
         classifications.append([])
@@ -823,9 +828,9 @@ def classify_based_on_specs(data: list[dict], status= None) -> list[list[str]]:
             continue
         for spec in specs:
             handler = globals()[f"classify_laptop_{spec}"]
-            details = laptop_data.get(spec, '')
+            details = laptop_data.get(spec, "")
             if not details:
-                classification.append('')
+                classification.append("")
                 continue
             classification.append(handler(details))
     return classifications
@@ -850,7 +855,7 @@ def classify_based_on_group(data: list[dict], status=None) -> list[list[str]]:
     Returns:
         a list of classifications for each laptop
     """
-    
+
     examples = []
     inputs = []
     classifications: list[list[str]] = []
@@ -858,7 +863,7 @@ def classify_based_on_group(data: list[dict], status=None) -> list[list[str]]:
     def classify(batch: list[str]):
         # Classify the inputs using the Cohere API
         response = client.classify(inputs=batch, examples=examples, model="large")
-    
+
         status.update("Processing classifications...")
         # Extract the classification labels and confidences for each input
         for classification in response.classifications:
@@ -884,7 +889,7 @@ def classify_based_on_group(data: list[dict], status=None) -> list[list[str]]:
     for ex in json.loads(examples_file.read_text()):
         # Create an Example object from each example in the file and append it to the examples list
         examples.append(Example(ex[0], ex[1]))
-    
+
     status.update("Fetching data...")
     # Extract the input texts from the input dictionaries
     batch = []
@@ -901,8 +906,7 @@ def classify_based_on_group(data: list[dict], status=None) -> list[list[str]]:
         classify(batch)
         batch = []
         batch_count += 1
-        
-    
+
     return classifications
 
 
@@ -922,16 +926,16 @@ def generate_description():
     Args:
         data: the data to use to generate the description
     """
-    from ..config import LAPTOP_DB, COHERE_API_KEYS
-    from rich import get_console
     import time
     from itertools import cycle
 
+    from rich import get_console
+
+    from ..config import COHERE_API_KEYS, LAPTOP_DB
 
     console = get_console()
     api_key = cycle(COHERE_API_KEYS)
     cohere = Client(next(api_key), check_api_key=False)
-
 
     data = json.loads(LAPTOP_DB.read_text())
     count = 0
@@ -948,8 +952,7 @@ def generate_description():
                 count = 0
             status.update(f"Classifying laptop {lcount}. ")
             desc = classify_laptop(laptop)
-            description_raw = " ".join(
-                c.strip() for c in desc)
+            description_raw = " ".join(c.strip() for c in desc)
             while len(description_raw) < 250:
                 description_raw += " " + description_raw
             response = cohere.summarize(
@@ -957,9 +960,12 @@ def generate_description():
                 model="summarize-medium",
                 temperature=0.5,
                 extractiveness="high",
-                length="long"
+                length="long",
             )
             laptop["description"] = response.summary
             LAPTOP_DB.write_text(json.dumps(data))
-            console.log(f"Finished laptop {lcount} of {length} ✔")
+            if lcount == length:
+                console.log("Completed 🥳🥳🔥🔥🔥")
+            else:
+                console.log(f"Finished laptop {lcount} of {length} ✔")
             count += 1

@@ -1,5 +1,6 @@
-from ..config import LAPTOP_DB
 import json
+
+from ..config import LAPTOP_DB
 
 """
 'currency': {
@@ -16,6 +17,8 @@ Data(list):
     Laptop(dict):
         prices(list) -> PRICE OLDPRICE currency
 """
+
+
 def cur_converter():
     with open(LAPTOP_DB, "r") as f:
         data = json.loads(f.read())
@@ -39,6 +42,7 @@ def cur_converter():
 
     with open(LAPTOP_DB, "w") as f:
         f.write(json.dumps(data))
+
 
 if __name__ == "__main__":
     cur_converter()

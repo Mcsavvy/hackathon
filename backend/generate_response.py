@@ -1,3 +1,3 @@
-import cohere
 import os
 
+import cohere

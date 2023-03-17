@@ -1,33 +1,27 @@
-from ..config import (
-    LAPTOP_VECTORS,
-    LAPTOP_PAYLOADS,
-    LAPTOP_DB,
-    LAPTOPS_COLLECTION_NAME,
-    QDRANT_BATCH_SIZE,
-    QDRANT_INIT_KWARGS,
-    COHERE_API_KEY,
-)
 import json
 import os
 import sys
 import time
 
-from cohere import Client as CohereClient
 import numpy as np
-import pandas as pd
 import rich
-# from cohere.embeddings import Embeddings
+from cohere import Client as CohereClient
 from qdrant_client import QdrantClient
 from qdrant_client.http.exceptions import UnexpectedResponse
 from qdrant_client.models import Distance, VectorParams
+from rich import box, get_console
 from rich.panel import Panel
 from rich.progress import Progress
-from rich import get_console
-from tqdm import tqdm
-from rich import box
-# from IPython.terminal.embed import embed
-from collections import defaultdict
 
+from ..config import (
+    COHERE_API_KEY,
+    LAPTOP_DB,
+    LAPTOP_PAYLOADS,
+    LAPTOP_VECTORS,
+    LAPTOPS_COLLECTION_NAME,
+    QDRANT_BATCH_SIZE,
+    QDRANT_INIT_KWARGS,
+)
 
 cohere = CohereClient(COHERE_API_KEY)
 qdrant = QdrantClient(**QDRANT_INIT_KWARGS)
@@ -36,18 +30,15 @@ console = get_console()
 
 def embed_laptops() -> None:
     """Embed all laptop classifications."""
-    payloads = dict[int, list[str]]()
+    payloads: list[list[str]] = []
     embeddings: list[list[float]] = []
+    data: list[dict] = json.loads(LAPTOP_DB.read_text())
 
-    for path in LAPTOP_PAYLOADS:
-        classifications = json.loads(path.read_text())
-        for index, classification in enumerate(classifications):
-            # each item belongs to an item
-            if isinstance(classification, list):
-                payload = " ".join(c.strip() for c in classification)
-            else:
-                payload = str(classification).strip()
-            payloads.setdefault(index, list()).append(payload)
+    for laptop in data[:]:
+        _payloads = []
+        for datapoint in ("name", "mpn", "info", "description"):
+            _payloads.append(laptop[datapoint])
+        payloads.append(" ".join(_payloads))
 
     batch_counter = 1
     payload_size = len(payloads)
@@ -55,19 +46,17 @@ def embed_laptops() -> None:
     if r != 0:
         no_of_batches += 1
     batch: list = []
-    for payload_set in payloads.values():
-        batch.append(" - ".join(payload_set))
+    for payload in payloads:
+        batch.append(payload)
         if len(batch) >= 96:
-            console.log(
-                f"Embedding batch {batch_counter} of {no_of_batches}...")
-            resp = cohere.embed(batch, model='multilingual-22-12')
+            console.log(f"Embedding batch {batch_counter} of {no_of_batches}...")
+            resp = cohere.embed(batch, model="multilingual-22-12")
             embeddings.append(resp.embeddings)
             batch_counter += 1
             batch = []
     if len(batch) > 0:
-        console.log(
-            f"Embedding batch {batch_counter} of {no_of_batches}...")
-        resp = cohere.embed(batch, model='multilingual-22-12')
+        console.log(f"Embedding batch {batch_counter} of {no_of_batches}...")
+        resp = cohere.embed(batch, model="multilingual-22-12")
         embeddings.append(resp.embeddings)
         batch_counter += 1
         batch = []
@@ -90,28 +79,24 @@ def upload_to_cluster():
 
     # create collection.
     # NOTE: would be recreated if it exists.
-    console.log(
-        f"Creating collection {LAPTOPS_COLLECTION_NAME!r}...")
+    console.log(f"Creating collection {LAPTOPS_COLLECTION_NAME!r}...")
     qdrant.recreate_collection(
         collection_name=LAPTOPS_COLLECTION_NAME,
-        vectors_config=VectorParams(
-            size=vector_size,
-            distance=Distance.COSINE
-        )
+        vectors_config=VectorParams(size=vector_size, distance=Distance.COSINE),
     )
 
     # upload collection
-    console.log(
-        f"Uploading collection {LAPTOPS_COLLECTION_NAME!r}...")
+    console.log(f"Uploading collection {LAPTOPS_COLLECTION_NAME!r}...")
     qdrant.upload_collection(
         collection_name=LAPTOPS_COLLECTION_NAME,
         vectors=vectors,
         payload=data,
-        ids=None,
+        ids=[laptop["id"] for laptop in data],
         batch_size=QDRANT_BATCH_SIZE,
-        parallel=10    
+        parallel=10,
     )
     console.log("Done ✔")
+
 
 class NeuralSearcher:
     """A neural searcher."""
@@ -128,6 +113,7 @@ class NeuralSearcher:
         self.model = cohere
         # initialize Qdrant client
         self.qdrant_client = qdrant
+        self.data = json.loads(LAPTOP_DB.read_text())
 
     def search(self, text: str):
         """
@@ -137,18 +123,27 @@ class NeuralSearcher:
             text: text to use to query database
         """
         # Convert text query into vector
-        vector = self.model.embed([text], model='multilingual-22-12').embeddings[0]
+        vector = self.model.embed([text], model="multilingual-22-12").embeddings[0]
         # print(f"Vectors: {vector}")
 
         # Use `vector` for search for closest vectors in the collection
         search_result = self.qdrant_client.search(
             collection_name=self.collection_name,
             query_vector=np.array(vector),
+            with_payload=False,
             query_filter=None,  # We don't want any filters for now
-            limit=5  # 5 the most closest results is enough
+            limit=5,  # 5 the most closest results is enough
         )
+        # print(search_result[0])
+        # print("\n---\n")
+        # print(self.data[search_result[0].id])
         # `search_result` contains found vector ids with similarity
         # scores along with the stored payload
         # In this function we are interested in payload only
-        payloads = [hit.payload for hit in search_result]
+        payloads = []
+        for hit in search_result:
+            for laptop in self.data:
+                if laptop["id"] == hit.id:
+                    break
+            payloads.append(laptop)
         return payloads
