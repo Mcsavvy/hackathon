@@ -22,6 +22,8 @@ from ..config import (
     QDRANT_BATCH_SIZE,
     QDRANT_INIT_KWARGS,
 )
+from translate import Translator
+
 
 cohere = CohereClient(COHERE_API_KEY)
 qdrant = QdrantClient(**QDRANT_INIT_KWARGS)
@@ -156,6 +158,8 @@ class NeuralSearcher:
         """
         # Convert text query into vector
         vector = self.model.embed([text], model="multilingual-22-12").embeddings[0]
+        lang = self.model.detect_language(texts=[text]).results[0].language_code
+        translator= Translator(to_lang=lang)
         # print(f"Vectors: {vector}")
 
         # Use `vector` for search for closest vectors in the collection
@@ -166,6 +170,7 @@ class NeuralSearcher:
             query_filter=None,  # We don't want any filters for now
             limit=limit,  # 5 the most closest results is enough
         )
+        # Je veux un ordinateur portable étudiant
         # print(search_result[0])
         # print("\n---\n")
         # print(self.data[search_result[0].id])
@@ -177,5 +182,6 @@ class NeuralSearcher:
             for laptop in self.data:
                 if laptop["id"] == hit.id:
                     break
+            laptop["description"] = translator.translate(laptop["description"])
             payloads.append(laptop)
         return payloads
